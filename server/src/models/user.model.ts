@@ -6,6 +6,8 @@ interface IUser extends Document {
     password: string;
     is_deleted: boolean;
     posts: Schema.Types.ObjectId[]; 
+    created_at?: Date;
+    updated_at?: Date;
 }
 
 const userSchema = new Schema<IUser>({

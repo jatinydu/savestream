@@ -4,8 +4,10 @@ exports.ENV = void 0;
 const PORT = Number(process.env.PORT);
 const DB_URL = process.env.DB_URL;
 const JWT_SECRET = process.env.JWT_SECRET;
+const NODE_ENV = process.env.NODE_ENV;
 exports.ENV = {
     PORT,
     DB_URL,
-    JWT_SECRET
+    JWT_SECRET,
+    NODE_ENV
 };

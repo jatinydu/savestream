@@ -7,6 +7,8 @@ interface IPost extends Document {
     tags: string[];
     is_deleted: boolean;
     user: Schema.Types.ObjectId; 
+    created_at?: Date;
+    updated_at?: Date;
 }
 
 const postSchema = new Schema<IPost>({
