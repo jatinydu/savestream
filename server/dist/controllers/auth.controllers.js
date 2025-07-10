@@ -10,12 +10,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.signup = exports.login = void 0;
+const http_status_codes_1 = require("http-status-codes");
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
     }
     catch (error) {
         console.error("🔴 Login error:", error.message);
-        res.status(500).json({ success: false, message: "Internal server error" });
+        res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).json({ success: false, message: "Internal server error" });
     }
 });
 exports.login = login;
@@ -24,7 +25,7 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     catch (error) {
         console.error("🔴 Signup error:", error.message);
-        res.status(500).json({ success: false, message: "Internal server error" });
+        res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).json({ success: false, message: "Internal server error" });
     }
 });
 exports.signup = signup;
