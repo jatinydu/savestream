@@ -5,7 +5,7 @@ interface IUser extends Document {
     email: string;
     password: string;
     is_deleted: boolean;
-    posts: string[]; 
+    posts: Schema.Types.ObjectId[]; 
 }
 
 const userSchema = new Schema<IUser>({
