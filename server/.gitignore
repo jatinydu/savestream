@@ -1,0 +1,13 @@
+# Node.js
+node_modules/
+dist/ # Compiled TypeScript output directory
+
+# Environment variables
+.env
+
+# IDE and Editor files
+.vscode/ # VS Code specific files
+
+# OS generated files
+.DS_Store
+Thumbs.db
