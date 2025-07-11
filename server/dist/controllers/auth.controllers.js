@@ -17,6 +17,7 @@ const http_status_codes_1 = require("http-status-codes");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const config_1 = require("../config");
 const models_1 = require("../models");
+const utils_1 = require("../utils");
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { username, password } = req.body;
@@ -40,12 +41,27 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 .status(http_status_codes_1.StatusCodes.UNAUTHORIZED)
                 .json({ success: false, message: "Invalid password" });
         }
-        const token = user.generateAuthToken(user);
-        res.cookie("token", token, {
+        const payload = {
+            id: user._id,
+            username: user.username,
+            created_at: user.created_at,
+            updated_at: user.updated_at,
+        };
+        const token = (0, utils_1.generateAuthToken)(payload);
+        res.status(http_status_codes_1.StatusCodes.OK).cookie("token", token, {
             httpOnly: true,
             secure: config_1.ENV.NODE_ENV === "production",
             sameSite: "strict",
             maxAge: 24 * 60 * 60 * 1000, // 1 day
+        }).json({
+            success: true,
+            message: "Login successfull",
+            user: {
+                id: user._id,
+                username: user.username,
+                created_at: user.created_at,
+                updated_at: user.updated_at,
+            },
         });
     }
     catch (error) {
@@ -73,7 +89,17 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 .status(http_status_codes_1.StatusCodes.NOT_ACCEPTABLE)
                 .json({ success: false, message: "User already exists" });
         }
-        const hashedPassword = bcrypt_1.default.hash(password, 10);
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        const isPassStrong = passwordRegex.test(password);
+        if (!isPassStrong) {
+            return res
+                .status(http_status_codes_1.StatusCodes.BAD_REQUEST)
+                .json({
+                success: false,
+                message: "Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character.",
+            });
+        }
+        const hashedPassword = yield bcrypt_1.default.hash(password, 10);
         const user = yield models_1.User.create({
             username,
             password: hashedPassword,

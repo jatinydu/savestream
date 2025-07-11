@@ -31,7 +31,14 @@ export const login = async (req: Request, res: Response) => {
         .json({ success: false, message: "Invalid password" });
     }
 
-    const token = generateAuthToken(user);
+    const payload = {
+      id: user._id,
+      username: user.username,
+      created_at: user.created_at,
+      updated_at: user.updated_at,
+    }
+
+    const token = generateAuthToken(payload);
 
     res.status(StatusCodes.OK).cookie("token", token, {
       httpOnly: true,
@@ -78,7 +85,19 @@ export const signup = async (req: Request, res: Response) => {
         .json({ success: false, message: "User already exists" });
     }
 
-    const hashedPassword = bcrypt.hash(password, 10);
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      const isPassStrong =  passwordRegex.test(password);
+
+      if(!isPassStrong) {
+        return res
+          .status(StatusCodes.BAD_REQUEST)
+          .json({
+            success: false,
+            message: "Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character.",
+          });
+      }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await User.create({
       username,
