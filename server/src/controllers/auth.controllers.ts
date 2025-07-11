@@ -85,6 +85,22 @@ export const signup = async (req: Request, res: Response) => {
         .json({ success: false, message: "User already exists" });
     }
 
+    if(username.length < 3 || username.length > 10) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({
+          success: false,
+          message: "Username must be between 3 and 20 characters long",
+        });
+    }
+
+    if(password.length < 8 || password.length > 20) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        success: false,
+        message: "Password must be between 8 and 20 characters long",
+      })
+    }
+
       const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
       const isPassStrong =  passwordRegex.test(password);
 
