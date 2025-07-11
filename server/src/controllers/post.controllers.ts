@@ -64,8 +64,55 @@ export const createPost = async (req: ModRequest, res: Response) => {
     }
   };
 
-export const getPosts = async (req: Request, res: Response) => {
-
+export const getPosts = async (req: ModRequest, res: Response) => {
+    try {
+        const user_id = req.user?.id; 
+        const {
+            page = '1',
+            limit = '10',
+            sortBy = 'created_at',
+            order = 'desc',
+            type,
+            tags
+          } = req.query;
+      
+          const pageNumber = parseInt(page as string);
+          const limitNumber = parseInt(limit as string);
+          const sortOrder = order === 'asc' ? 1 : -1;
+      
+          // Build filter object
+          const filter: any = {
+            is_deleted: false,
+            user: user_id 
+          };
+      
+          if (type) filter.type = type;
+          if (tags) filter.tags = { $in: (tags as string).split(',') };
+      
+          // Query the database
+          const posts = await Post.find(filter)
+            .populate('user', 'username') // populate user info
+            .populate('tags', 'name')           // populate tag names
+            .sort({ [sortBy as string]: sortOrder })
+            .skip((pageNumber - 1) * limitNumber)
+            .limit(limitNumber);
+      
+          const totalPosts = await Post.countDocuments(filter);
+      
+          res.status(200).json({
+            success: true,
+            message: "Posts retrieved successfully",
+            data: {
+                page: pageNumber,
+                totalPages: Math.ceil(totalPosts / limitNumber),
+                totalPosts,
+                posts,
+            }
+          });
+    } catch (error: any) {
+        console.log("🔴 Error retrieving posts:", error.message);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ success: false, message: "Internal Server Error" });
+    }
 };
 
 export const deletePost = async (req: ModRequest, res: Response) => {
