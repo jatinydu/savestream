@@ -66,6 +66,48 @@ export const createPost = async (req: ModRequest, res: Response) => {
   }
 };
 
-export const getPosts = async (req: Request, res: Response) => {};
+export const getPosts = async (req: Request, res: Response) => {
 
-export const deletePost = async (req: Request, res: Response) => {};
+};
+
+export const deletePost = async (req: Request, res: Response) => {
+    try {
+        const postId = req.params.id;
+    
+        if (!postId) {
+        return res
+            .status(StatusCodes.BAD_REQUEST)
+            .json({ success: false, message: "Post ID is required" });
+        }
+    
+        const post = await Post.findById(postId);
+    
+        if (!post) {
+        return res
+            .status(StatusCodes.NOT_FOUND)
+            .json({ success: false, message: "Post not found" });
+        }
+    
+        post.is_deleted = true;
+        await post.save();
+    
+        res.status(StatusCodes.OK).json({
+        success: true,
+        message: "Post deleted successfully",
+        post: {
+            id: post._id,
+            title: post.title,
+            link: post.link,
+            user_id: post.user,
+            created_at: post.created_at,
+            updated_at: post.updated_at,
+        },
+        });
+    
+    } catch (error: any) {
+        console.log("🔴 Error deleting post:", error.message);
+        res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({ success:false, message: "Internal Server Error" });
+    }
+};
