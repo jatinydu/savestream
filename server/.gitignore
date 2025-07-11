@@ -2,6 +2,7 @@
 node_modules/
 dist/ # Compiled TypeScript output directory
 dist*
+**/dist/
 
 # Environment variables
 .env
