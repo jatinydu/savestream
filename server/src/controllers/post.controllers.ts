@@ -1,7 +1,9 @@
 import { Response, Request } from "express";
 import { StatusCodes } from "http-status-codes";
-import { Post,Tag } from "../models";
+import { Post,Tag, User } from "../models";
+import { ENV } from "../config";
 import mongoose from "mongoose";
+import { v4 as uuidv4 } from 'uuid';
 
 interface ModRequest extends Request {
     user?: {
@@ -40,6 +42,12 @@ export const createPost = async (req: ModRequest, res: Response) => {
           { session } 
         );
       }
+
+      await User.updateOne(
+        { _id: user_id },
+        { $push: { posts: savedPost._id } },
+        { session }
+      );
   
       await session.commitTransaction(); 
   
@@ -116,65 +124,161 @@ export const getPosts = async (req: ModRequest, res: Response) => {
 };
 
 export const deletePost = async (req: ModRequest, res: Response) => {
-    try {
-        const postId = req.params.id;
-        const user_id = req.user?.id;
+  let session:any = null;
 
-        if( !user_id) {
-            return res
-                .status(StatusCodes.UNAUTHORIZED)
-                .json({ success: false, message: "User not authenticated" });
-        }
-    
-        if (!postId) {
-        return res
-            .status(StatusCodes.BAD_REQUEST)
-            .json({ success: false, message: "Post ID is required" });
-        }
-    
-        const post = await Post.findById(postId);
-    
-        if (!post) {
-        return res
-            .status(StatusCodes.NOT_FOUND)
-            .json({ success: false, message: "Post not found" });
-        }
+  try {
+      const postId = req.params.id;
+      const user_id = req.user?.id;
 
-        if( post.user.toString() !== user_id.toString() ) {
-            return res
-                .status(StatusCodes.FORBIDDEN)
-                .json({ success: false, message: "You are not authorized to delete this post" });
-        }
+      if (!user_id) {
+          return res
+              .status(StatusCodes.UNAUTHORIZED)
+              .json({ success: false, message: "User not authenticated" });
+      }
 
-        const associatedTagIds = post.tags;
-    
-        post.is_deleted = true;
-        await post.save();
- 
-        if (associatedTagIds && associatedTagIds.length > 0) {
-            await Tag.updateMany(
-                { _id: { $in: associatedTagIds } }, 
-                { $pull: { posts: post._id } } 
-            );
-        }
-    
-        res.status(StatusCodes.OK).json({
-        success: true,
-        message: "Post deleted successfully",
-        post: {
-            id: post._id,
-            title: post.title,
-            link: post.link,
-            user_id: post.user,
-            created_at: post.created_at,
-            updated_at: post.updated_at,
-        },
-        });
-    
-    } catch (error: any) {
-        console.log("🔴 Error deleting post:", error.message);
-        res
-        .status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .json({ success:false, message: "Internal Server Error" });
-    }
+      if (!postId) {
+          return res
+              .status(StatusCodes.BAD_REQUEST)
+              .json({ success: false, message: "Post ID is required" });
+      }
+
+      session = await mongoose.startSession();
+      session.startTransaction(); 
+
+      const post = await Post.findOne({ _id: postId, is_deleted: false }).session(session); 
+
+      if (!post) {
+          await session.abortTransaction(); 
+          return res
+              .status(StatusCodes.NOT_FOUND)
+              .json({ success: false, message: "Post not found" });
+      }
+
+      if (post.user.toString() !== user_id.toString()) {
+          await session.abortTransaction(); 
+          return res
+              .status(StatusCodes.FORBIDDEN)
+              .json({ success: false, message: "You are not authorized to delete this post" });
+      }
+
+      const associatedTagIds = post.tags;
+
+      post.is_deleted = true;
+      await post.save({ session }); 
+
+      if (associatedTagIds && associatedTagIds.length > 0) {
+          await Tag.updateMany(
+              { _id: { $in: associatedTagIds } },
+              { $pull: { posts: post._id } },
+              { session } 
+          );
+      }
+
+      await User.updateOne(
+          { _id: user_id },
+          { $pull: { posts: post._id } },
+          { session }
+      );
+
+      await session.commitTransaction();
+
+      res.status(StatusCodes.OK).json({
+          success: true,
+          message: "Post deleted successfully",
+          post: {
+              id: post._id,
+              title: post.title,
+              user_id: post.user,
+          },
+      });
+
+  } catch (error: any) {
+      if (session) {
+          await session.abortTransaction(); 
+      }
+      console.error("🔴 Error deleting post:", error.message);
+      res
+          .status(StatusCodes.INTERNAL_SERVER_ERROR)
+          .json({ success: false, message: "Internal Server Error" });
+  } finally {
+      if (session) {
+          session.endSession(); 
+      }
+  }
 };
+
+export const getShareLink = async (req: ModRequest, res: Response) => {
+    try {
+      const { id } = req.params;
+      const { share } = req.body;
+      const user_id = req.user?.id;
+  
+      if (typeof share !== "boolean") {
+        return res.status(StatusCodes.EXPECTATION_FAILED).json({ message: "Invalid 'share' value" });
+      }
+  
+      const post = await Post.findById(id);
+  
+      if (!post || post.is_deleted) {
+        return res.status(StatusCodes.NOT_FOUND).json({ message: "Post not found" });
+      }
+
+      if( post.user.toString() !== user_id ) {
+        return res.status(StatusCodes.UNAUTHORIZED).json({success:false, message: "You are not authorized to share this post" });
+      }
+  
+      if (share) {
+        if (!post.share_id) {
+          post.share_id = uuidv4(); 
+        }
+      } else {
+        post.share_id = undefined;
+      }
+  
+      await post.save();
+  
+      const link = share ? `${ENV.BASE_URL}/${post.share_id}` : null;
+  
+      return res.status(StatusCodes.OK).json({success:true, message:"operation succesfull", link });
+    } catch (error:any) {
+      console.error("Error sharing post:", error.message);
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ success:false, message: "Internal Server Error" });
+    }
+  };
+
+  export const getPublicBrain = async (req: Request, res: Response) => {
+    try {
+      const { shareId } = req.params;
+
+      if( !shareId ) {
+        return res.status(StatusCodes.BAD_REQUEST).json({ message: "Share ID is required" });
+      }
+
+      const data = await User.findOne({ share_id: shareId, is_deleted:false }).populate({
+        path:"posts",
+        match:{is_deleted:false},
+        options: { sort: { 'createdAt': -1 } }
+      });
+
+      if(!data || !data.posts || data.posts.length === 0) {
+        return res.status(StatusCodes.NOT_FOUND).json({ 
+          success: false, 
+          message: "Public brain not found or no posts available" 
+        });
+      }
+
+      res.status(StatusCodes.OK).json({ 
+        success: true,
+        message: "Public brain retrieved successfully",
+        data: {
+          username:data?.username || "Anonymous",
+          contents: data?.posts || [],
+        }
+       });
+    } catch (error: any) {
+      console.error("🔴 Error retrieving public brain:", error.message);
+      res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({ success: false, message: "Internal Server Error" });
+    }
+  };

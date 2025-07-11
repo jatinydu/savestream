@@ -1,3 +1,4 @@
+import { UUID } from 'crypto';
 import { Schema, model, Document } from 'mongoose';
 
 interface IPost extends Document {
@@ -6,6 +7,7 @@ interface IPost extends Document {
     link: string;
     tags: string[];
     is_deleted: boolean;
+    share_id?: string; 
     user: Schema.Types.ObjectId; 
     created_at?: Date;
     updated_at?: Date;
@@ -25,7 +27,8 @@ const postSchema = new Schema<IPost>({
         type: Schema.Types.ObjectId,
         ref: 'User',
         required: true
-    }
+    },
+    share_id: { type: String, unique: true, sparse: true } 
 },{ timestamps: { createdAt:'created_at', updatedAt:'updated_at' } });
 
 const Post = model<IPost>('Post', postSchema);
