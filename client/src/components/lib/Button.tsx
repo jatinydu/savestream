@@ -26,5 +26,5 @@ const btnSizes = {
 const defaultStyles = "rounded-lg font-sans focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-200 self-start";
 
 export default function Button({className,variant="primary",size="medium",onClick,label,disabled=false, startIcon, endIcon}: ButtonProps) {
-  return <button disabled={disabled} className={`${btnTypes[variant]} ${btnSizes[size]} ${className} ${defaultStyles}`} onClick={onClick}>{label}</button>
+  return <button disabled={disabled} className={`${btnTypes[variant]} ${btnSizes[size]} ${className} ${defaultStyles}`} onClick={onClick}><span className='flex items-center gap-1'>{startIcon}{label}{endIcon}</span></button>
 }
