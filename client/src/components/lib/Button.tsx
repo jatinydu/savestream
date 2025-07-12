@@ -1,0 +1,30 @@
+import React from 'react';
+
+interface ButtonProps {
+    label: string;
+    onClick: () => void;
+    disabled?: boolean;
+    variant?: 'primary' | 'secondary' | 'ghost';
+    size?: 'small' | 'medium' | 'large';
+    className?: string;
+    startIcon?: React.ReactNode;
+    endIcon?: React.ReactNode;
+}
+
+const btnTypes = {
+    primary: "bg-primary hover:bg-primary-hover text-white",
+    secondary: "bg-gray-500 hover:bg-gray-600 text-white",
+    ghost: "bg-transparent hover:bg-gray-100 text-gray-700 border border-gray-300",
+}
+
+const btnSizes = {
+    small: "py-2 px-4 text-[0.7rem] font-semibold",
+    medium: "py-[8px] px-8 text-[0.9rem]",
+    large: "py-2 px-10 text-[1rem]",
+}
+
+const defaultStyles = "rounded-lg font-sans focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-200 self-start";
+
+export default function Button({className,variant="primary",size="medium",onClick,label,disabled=false, startIcon, endIcon}: ButtonProps) {
+  return <button disabled={disabled} className={`${btnTypes[variant]} ${btnSizes[size]} ${className} ${defaultStyles}`} onClick={onClick}>{label}</button>
+}
