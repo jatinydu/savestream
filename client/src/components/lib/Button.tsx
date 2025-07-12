@@ -14,12 +14,12 @@ interface ButtonProps {
 const btnTypes = {
     primary: "bg-primary hover:bg-primary-hover text-white",
     secondary: "bg-gray-500 hover:bg-gray-600 text-white",
-    ghost: "bg-transparent hover:bg-gray-100 text-gray-700 border border-gray-300",
+    ghost: "bg-background hover:bg-gray-100 text-gray-700 border border-border hover:bg-primary-lighter hover:border-primary-lighter",
 }
 
 const btnSizes = {
     small: "py-2 px-4 text-[0.7rem] font-semibold",
-    medium: "py-[8px] px-8 text-[0.9rem]",
+    medium: "py-[6px] px-5 text-[0.9rem]",
     large: "py-2 px-10 text-[1rem]",
 }
 
