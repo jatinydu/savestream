@@ -18,6 +18,8 @@ function App() {
           <ActionBtn variant="add" size="medium" icon={<Plus size={18}/>} onClick={()=>{}}/>
           <ActionBtn variant="add" size="large" icon={<Plus size={20}/>} onClick={()=>{}}/>
           <ActionBtn variant="add" size="small" icon={<Plus size={16}/>} onClick={()=>{}}/>
+          <ActionBtn variant="delete" size="small" icon={<Plus size={16}/>} onClick={()=>{}}/>
+          <ActionBtn variant="delete" size="small" icon={<Plus size={16}/>} onClick={()=>{}}/>
           </div>
       </div>
     </>
