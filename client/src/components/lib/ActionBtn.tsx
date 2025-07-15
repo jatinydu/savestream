@@ -23,7 +23,7 @@ const btnSizes = {
     large: "py-6 px-6 text-[1rem]",
 }
 
-const defaultStyles = "rounded-full font-sans focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-200 self-start cursor-pointer";
+const defaultStyles = "rounded-full font-sans self-start cursor-pointer";
 
 export default function ActionBtn({className,variant="add",size="medium",onClick,disabled=false, icon}: ButtonProps) {
   return <button disabled={disabled} className={`${btnTypes[variant]} ${btnSizes[size]} ${className} ${defaultStyles}`} onClick={onClick}>{icon}</button>
