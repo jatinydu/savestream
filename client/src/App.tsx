@@ -1,5 +1,8 @@
 import { Import, Star, Plus } from 'lucide-react';
-import {SimpleInput} from "./components/lib/Input";
+import {SimpleInput, AiInput} from "./components/lib/Input";
+import { PiShootingStarLight } from "react-icons/pi";
+import { FiSearch } from "react-icons/fi";
+
 
 function App() {
   return (
@@ -12,14 +15,12 @@ function App() {
           size="md"
           />
 
-          {/* <AiInput 
+          <AiInput 
           type="text"
-          placeholder="AI Input"
-          className="bg-gray-100 text-gray-800"
-          size="md"
-          startIcon={<Import className="text-gray-500" />}
-          endIcon={<Star className="text-yellow-500" />}
-          /> */}
+          placeholder="Ask your brain anything..."
+          startIcon={<PiShootingStarLight color='blue'/>}
+          endIcon={<FiSearch color="white" size={13}/>}
+          />
       </div>
     </>
   )

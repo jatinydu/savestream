@@ -12,7 +12,7 @@ interface ButtonProps {
 const btnTypes = {
     add: "bg-primary hover:bg-primary-hover text-white",
     delete: "bg-red-500 hover:bg-red-600 text-white",
-    quick: "text-white rounded-xl bg-primary hover:bg-primary-hover",
+    quick: "text-white rounded-xl bg-primary-light hover:bg-primary-hover",
     ghost: "bg-background hover:bg-gray-100 text-gray-700 border border-border hover:bg-primary-lighter hover:border-primary-lighter",
 }
 
