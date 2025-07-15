@@ -27,22 +27,22 @@ const variantIcon = {
 }
 
 const variantStyle={
-  success: 'bg-green-100 text-green-800',
-  error: 'bg-red-100 text-red-800',
-  info: 'bg-blue-100 text-blue-800',
-  warning: 'bg-yellow-100 text-yellow-800',
+  success: 'text-green-800 bg-gradient-to-b form-white via-green-50 to-green-100',
+  error: 'text-red-800',
+  info: 'text-blue-800',
+  warning: 'text-yellow-800',
 }
 
 const defaultStyle = 'flex flex-col justify-between items-start p-4 rounded-lg shadow-md w-80 gap-2';
 
 export default function Toast({message="Test message..",variant="success"}: ToastProps) {
   return (
-    <div className={`${variantStyle[variant]} ${defaultStyle}`}>
-      <span className="flex gap-1.5 items-center">
+    <div className={`${variantStyle[variant]} ${defaultStyle} relative`}>
+      <span className="flex gap-2 items-center">
         {variantIcon[variant]} {variantTitle[variant]}
       </span>
-      <p>{message}</p>
-      <ActionBtn variant="ghost" size="small" icon={<GrClose/>} onClick={() => {}} className="" />
+      <p className="opacity-50 text-black font-light ml-9">{message}</p>
+      <ActionBtn variant="ghost" size="small" icon={<GrClose/>} onClick={() => {}} className="absolute top-2 right-5 border-none outline-none" />
     </div>
   )
 }
