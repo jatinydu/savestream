@@ -27,10 +27,10 @@ const variantIcon = {
 }
 
 const variantStyle={
-  success: 'text-green-800 bg-gradient-to-b form-white via-green-50 to-green-100',
-  error: 'text-red-800',
-  info: 'text-blue-800',
-  warning: 'text-yellow-800',
+  success: 'text-green-800 bg-gradient-to-b form-white via-green-50 to-green-50',
+  error: 'text-red-800 bg-gradient-to-b form-white via-red-50 to-red-50',
+  info: 'text-blue-800 bg-gradient-to-b form-white via-blue-50 to-blue-50',
+  warning: 'text-yellow-800 bg-gradient-to-b form-white via-yellow-50 to-yellow-50',
 }
 
 const defaultStyle = 'flex flex-col justify-between items-start p-4 rounded-lg shadow-md w-80 gap-2';
