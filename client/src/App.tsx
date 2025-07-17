@@ -1,4 +1,4 @@
-import { useToast } from "./hooks/useToast";
+import useToast from "./hooks/useToast";
 import CtaBtn from "./components/lib/CtaBtn"
 
 function App() {
@@ -12,9 +12,19 @@ function App() {
       duration: 3000
     })
   }
+  const errorHandler = () => {
+    console.log("Error button clicked!");
+    showToast({
+      message: "This is an error message!",
+      variant: "error",
+      position: "bottom-right",
+      duration: 3000
+    })
+  }
   return (
     <div className="w-screen h-screen flex justify-center items-center">
          <CtaBtn variant="primary" size="medium" label="Click me" onClick={submitHandler}/>
+         <CtaBtn variant="ghost" size="medium" label="Click me" onClick={errorHandler}/>
     </div>
   )
 }

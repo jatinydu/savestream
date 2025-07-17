@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useState } from 'react';
 import Toast from '../components/lib/Toast';
 
 interface ToastProps {
@@ -30,16 +30,17 @@ export default function ToastProvider({ children }: { children: React.ReactNode 
       return (
         <ToastContext.Provider value={{ showToast }}>
           {children}
-          {toasts.map((toast) => (
+          <div className='fixed bottom-4 right-4 z-50 flex flex-col-reverse space-y-reverse space-y-2'>
+           {toasts.map((toast) => (
             <Toast
               key={toast.id}
               message={toast.message}
               variant={toast.variant}
-              position={toast.position}
               duration={toast.duration}
               onClose={() => removeToast(toast.id)}
             />
           ))}
+          </div>
         </ToastContext.Provider>
       );
 }

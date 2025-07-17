@@ -5,16 +5,13 @@ import { MdOutlineErrorOutline } from "react-icons/md";
 import { TbInfoTriangle } from "react-icons/tb";
 import { RiAlarmWarningLine } from "react-icons/ri";
 
-type positionType = 'bottom-left' | 'bottom-right' | 'top-left' | 'top-right';
-
 interface ToastProps {
-  id?: string; // Optional ID for the toast, useful for tracking or removing specific toasts
+  id?: number; // Optional ID for the toast, useful for tracking or removing specific toasts
   message: string;
   duration?: number; 
   onClose?: () => void; 
   variant?: 'success' | 'error' | 'info' | 'warning'; 
   className?: string; 
-  position?: positionType
 }
 
 const variantTitle = {
@@ -38,18 +35,11 @@ const variantStyle={
   warning: 'text-yellow-800 bg-gradient-to-b form-white via-yellow-50 to-yellow-50',
 }
 
-const positionStyle = {
-  'bottom-left': 'bottom-5 left-5',
-  'bottom-right': 'bottom-5 right-5',
-  'top-left': 'top-5 left-5',
-  'top-right': 'top-5 right-5',
-}
-
 const defaultStyle = 'flex flex-col justify-between items-start p-4 rounded-lg shadow-md w-80 gap-2';
 
-export default function Toast({message="Test message..",variant="success", position="bottom-right"}: ToastProps) {
+export default function Toast({message="Test message..",variant="success"}: ToastProps) {
   return (
-    <div className={`${variantStyle[variant]} ${defaultStyle} fixed ${positionStyle[position]}`}>
+    <div className={`${variantStyle[variant]} ${defaultStyle}`}>
       <span className="flex gap-2 items-center">
         {variantIcon[variant]} {variantTitle[variant]}
       </span>
