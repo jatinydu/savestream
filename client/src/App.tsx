@@ -9,7 +9,7 @@ function App() {
       message: "This is a toast message!",
       variant: "success",
       position: "bottom-right",
-      duration: 3000
+      duration: 9000
     })
   }
   const errorHandler = () => {
@@ -22,7 +22,7 @@ function App() {
     })
   }
   return (
-    <div className="w-screen h-screen flex justify-center items-center">
+    <div className="w-screen h-screen flex justify-center items-center pt-10">
          <CtaBtn variant="primary" size="medium" label="Click me" onClick={submitHandler}/>
          <CtaBtn variant="ghost" size="medium" label="Click me" onClick={errorHandler}/>
     </div>

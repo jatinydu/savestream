@@ -4,12 +4,13 @@ import { VscCheck } from "react-icons/vsc";
 import { MdOutlineErrorOutline } from "react-icons/md";
 import { TbInfoTriangle } from "react-icons/tb";
 import { RiAlarmWarningLine } from "react-icons/ri";
+import { useEffect } from "react";
 
 interface ToastProps {
   id?: number; // Optional ID for the toast, useful for tracking or removing specific toasts
   message: string;
   duration?: number; 
-  onClose?: () => void; 
+  onClose: () => void; 
   variant?: 'success' | 'error' | 'info' | 'warning'; 
   className?: string; 
 }
@@ -37,14 +38,18 @@ const variantStyle={
 
 const defaultStyle = 'flex flex-col justify-between items-start p-4 rounded-lg shadow-md w-80 gap-2';
 
-export default function Toast({message="Test message..",variant="success"}: ToastProps) {
+export default function Toast({message="Test message..",variant="success", duration = 2000, onClose}: ToastProps) {
+  useEffect(()=>{
+    const timer = setTimeout(onClose, duration);
+    return () => clearTimeout(timer);
+  },[])
   return (
     <div className={`${variantStyle[variant]} ${defaultStyle}`}>
       <span className="flex gap-2 items-center">
         {variantIcon[variant]} {variantTitle[variant]}
       </span>
       <p className="opacity-50 text-black font-light ml-9">{message}</p>
-      <ActionBtn variant="ghost" size="small" icon={<GrClose/>} onClick={() => {}} className="absolute top-2 right-5 border-none outline-none" />
+      <ActionBtn variant="ghost" size="small" icon={<GrClose/>} onClick={onClose} className="absolute top-2 right-5 border-none outline-none" />
     </div>
   )
 }
