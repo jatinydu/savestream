@@ -1,9 +1,9 @@
-import Toggle from "./components/lib/Toggle";
+import AddPostModel from "./components/createPost/AddPostModel";
 
 function App() {
   return (
     <div className="w-screen h-screen flex justify-center items-center pt-10">
-         <Toggle/>
+        <AddPostModel/>
     </div>
   )
 }
