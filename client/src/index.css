@@ -22,6 +22,7 @@
     /* Font Families */
     --font-sans: 'Inter', sans-serif; /* Define font-sans as 'Inter' */
     --font-serif: 'Merriweather', serif; /* Define font-serif as 'Merriweather' */
+    --font-mono: 'Fira Code', monospace; /* Define font-mono as 'Fira Code' */
 
     /* Font Wights */
     --font-weight-thin: 100;

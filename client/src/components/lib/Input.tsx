@@ -1,3 +1,4 @@
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import ActionBtn from "./ActionBtn";
 
 interface InputProps {
@@ -41,6 +42,14 @@ export function AiInput({type,placeholder,value,reference,className,required,nam
       {startIcon && <span className="">{startIcon}</span>}
       <input type={type} placeholder={placeholder} value={value} ref={reference} className={`${className} w-full outline-none`} required={required} name={name} />
       {endIcon && <ActionBtn onClick={()=>{}} className="px-5 py-3 rounded-xl cursor-pointer" variant="quick" size="small" icon={endIcon}/>}
+    </div>
+  )
+}
+
+export function TextArea({placeholder,value,className,required,name}: InputProps) {
+  return (
+    <div>
+      <textarea placeholder={placeholder} value={value} className={`${defaultStyles} ${className} ${simple} h-32 resize-none ${sizeStyles.md}`} required={required} name={name}></textarea>
     </div>
   )
 }
