@@ -23,8 +23,8 @@ const btnSizes = {
     large: "py-2 px-10 text-[1rem]",
 }
 
-const defaultStyles = "rounded-lg font-sans focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-200 self-start";
+const defaultStyles = "rounded-lg font-sans focus:outline-none transition-all duration-400 self-start";
 
 export default function CtaBtn({className,variant="primary",size="medium",onClick,label,disabled=false, startIcon, endIcon}: ButtonProps) {
-  return <button disabled={disabled} className={`${btnTypes[variant]} ${btnSizes[size]} ${className} ${defaultStyles}`} onClick={onClick}><span className='flex items-center gap-2'>{startIcon}{label}{endIcon}</span></button>
+  return <button disabled={disabled} className={`${btnTypes[variant]} ${btnSizes[size]} ${className} ${defaultStyles} focus:outline-none`} onClick={onClick}><span className='flex items-center gap-2'>{startIcon}{label}{endIcon}</span></button>
 }
