@@ -1,4 +1,5 @@
 import { SimpleInput, TextArea } from "../lib/Input";
+import SearchInput from "../autoComplete/SearchInput";
 
 interface CreateInputProps {
   label?: string;
@@ -24,7 +25,7 @@ export default function CreateInput(props:CreateInputProps) {
         </span>
       </span>
       {
-        props.tagType === 'input' ?  <SimpleInput className="w-full rounded-xl"/> : props.tagType === 'textarea' ? <TextArea className="w-full rounded-xl" /> : null
+        props.tagType === 'input' ?  <SimpleInput className="w-full rounded-xl"/> : props.tagType === 'textarea' ? <TextArea className="w-full rounded-xl" /> : props.tagType === "dropdown" ? <SearchInput/> : null
       }
     </div>
   )
