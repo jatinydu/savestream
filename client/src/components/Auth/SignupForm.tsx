@@ -6,7 +6,7 @@ import { Mail, UserRound, Lock } from 'lucide-react';
 
 export default function SignupForm(props:AuthCommonProps) {
   return (
-    <div className='lg:w-[28vw] flex flex-col p-4 px-8 border-2 border-gray-200 py-6 mt-6 rounded-2xl'>
+    <div className='lg:w-[28vw] md:w-[50vw] w-[90vw] flex flex-col p-4 px-8 border-2 border-gray-200 py-6 mt-6 rounded-2xl'>
        <h4 className='font-serif font-semibold text-2xl mb-3'>Signup for free</h4>
        <form className='flex flex-col gap-6 mt-3 w-full'>
           <CreateInput startIcon={<UserRound size={15} color="#99a1af"/>} required={true} type="text" label='Fullname' placeholder='Enter your name' tagType='input' className='h-[2.5rem] focus-within:ring-2 focus-within:ring-primary rounded-sm border-2 border-gray-100'/>
