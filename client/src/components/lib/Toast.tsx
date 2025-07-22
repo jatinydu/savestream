@@ -4,7 +4,7 @@ import { VscCheck } from "react-icons/vsc";
 import { MdOutlineErrorOutline } from "react-icons/md";
 import { TbInfoTriangle } from "react-icons/tb";
 import { RiAlarmWarningLine } from "react-icons/ri";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface ToastProps {
   id?: number; // Optional ID for the toast, useful for tracking or removing specific toasts
@@ -13,6 +13,7 @@ interface ToastProps {
   onClose: () => void; 
   variant?: 'success' | 'error' | 'info' | 'warning'; 
   className?: string; 
+  isMounted?: boolean; // Optional prop to control mounting behavior
 }
 
 const variantTitle = {
@@ -38,13 +39,23 @@ const variantStyle={
 
 const defaultStyle = 'flex flex-col justify-between items-start p-4 rounded-lg shadow-md w-80 gap-2';
 
+
 export default function Toast({message="Test message..",variant="success", duration = 2000, onClose}: ToastProps) {
-  useEffect(()=>{
-    const timer = setTimeout(onClose, duration);
-    return () => clearTimeout(timer);
-  },[])
+  const [visible, setVisible] = useState(false);
+  
+  useEffect(() => {
+        setVisible(true); 
+    
+        const timer = setTimeout(() => {
+          setVisible(false);
+          setTimeout(onClose, 300); 
+        }, duration);
+    
+        return () => clearTimeout(timer);
+      }, []);
+
   return (
-    <div className={`${variantStyle[variant]} ${defaultStyle}`}>
+    <div className={`${variantStyle[variant]} ${defaultStyle} transform transition-all duration-300 ease-in-out ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
       <span className="flex gap-2 items-center">
         {variantIcon[variant]} {variantTitle[variant]}
       </span>
