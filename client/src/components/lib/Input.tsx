@@ -38,9 +38,9 @@ export function SimpleInput({type,placeholder,value,reference,className,required
 
 export function AiInput({type,placeholder,value,reference,className,required,name,startIcon,endIcon}: AiProps) {
   return (
-    <div className={`flex gap-2 ${ai} px-3 py-1 self-start items-center justify-between min-w-[40rem] rounded-2xl`}>
+    <div className={`flex gap-2 ${ai} px-3 py-1 self-start items-center justify-between rounded-2xl ${className}`}>
       {startIcon && <span className="">{startIcon}</span>}
-      <input type={type} placeholder={placeholder} value={value} ref={reference} className={`${className} w-full outline-none`} required={required} name={name} />
+      <input type={type} placeholder={placeholder} value={value} ref={reference} className={`w-full outline-none`} required={required} name={name} />
       {endIcon && <ActionBtn onClick={()=>{}} className="px-5 py-3 rounded-xl cursor-pointer" variant="quick" size="small" icon={endIcon}/>}
     </div>
   )

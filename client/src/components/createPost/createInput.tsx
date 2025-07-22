@@ -1,4 +1,4 @@
-import { SimpleInput, TextArea } from "../lib/Input";
+import { AiInput, SimpleInput, TextArea } from "../lib/Input";
 import SearchInput from "../autoComplete/SearchInput";
 
 interface CreateInputProps {
@@ -9,11 +9,15 @@ interface CreateInputProps {
   type?: string;
   tagType?: 'input' | 'textarea' | 'dropdown';
   required?: boolean;
+  startIcon?: React.ReactNode;
+  endIcon?: React.ReactNode;
+  className?: string;
+  outerClass?: string;
 }
 
 export default function CreateInput(props:CreateInputProps) {
   return (
-    <div className="flex flex-col gap-1 w-full">
+    <div className={`flex flex-col gap-1 w-full`}>
       <span>
         {
           props.label
@@ -25,7 +29,7 @@ export default function CreateInput(props:CreateInputProps) {
         </span>
       </span>
       {
-        props.tagType === 'input' ?  <SimpleInput className="w-full rounded-xl"/> : props.tagType === 'textarea' ? <TextArea className="w-full rounded-xl" /> : props.tagType === "dropdown" ? <SearchInput/> : null
+        props.tagType === 'input' ?  <AiInput placeholder={props.placeholder} startIcon={props.startIcon} endIcon={props.endIcon} type={props.type} className={`w-full rounded-xl ${props.className}`}/> : props.tagType === 'textarea' ? <TextArea className="w-full rounded-xl" /> : props.tagType === "dropdown" ? <SearchInput/> : null
       }
     </div>
   )
