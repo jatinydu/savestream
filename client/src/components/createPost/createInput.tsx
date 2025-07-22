@@ -11,6 +11,7 @@ interface CreateInputProps {
   required?: boolean;
   startIcon?: React.ReactNode;
   endIcon?: React.ReactNode;
+  reference?: React.Ref<HTMLInputElement>;
   className?: string;
   outerClass?: string;
 }
@@ -29,7 +30,7 @@ export default function CreateInput(props:CreateInputProps) {
         </span>
       </span>
       {
-        props.tagType === 'input' ?  <AiInput placeholder={props.placeholder} startIcon={props.startIcon} endIcon={props.endIcon} type={props.type} className={`w-full rounded-xl ${props.className}`}/> : props.tagType === 'textarea' ? <TextArea className="w-full rounded-xl" /> : props.tagType === "dropdown" ? <SearchInput/> : null
+        props.tagType === 'input' ?  <AiInput reference={props.reference} placeholder={props.placeholder} startIcon={props.startIcon} endIcon={props.endIcon} type={props.type} className={`w-full rounded-xl ${props.className}`}/> : props.tagType === 'textarea' ? <TextArea className="w-full rounded-xl" /> : props.tagType === "dropdown" ? <SearchInput/> : null
       }
     </div>
   )
