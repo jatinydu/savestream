@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 
 interface User {
   username: string;
-  token: string;
+  // token: string;
 }
 
 interface AuthContextProps {
@@ -15,18 +15,19 @@ interface AuthContextProps {
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<User | null>(() => {
-    const savedUser = localStorage.getItem('User');
-    return savedUser ? JSON.parse(savedUser) : null;
+  const [user, setUser] = useState<User>({
+    username: '',
   });
 
-  const login = (user: User) => {
-    setUser(user);
-    localStorage.setItem('User', JSON.stringify(user));
+  const login = (userData: User) => {
+    setUser(userData);
+    localStorage.setItem('User', JSON.stringify(userData));
   };
 
   const logout = () => {
-    setUser(null);
+    setUser({
+      username: '',
+    });
     localStorage.removeItem('User');
   };
 

@@ -1,29 +1,52 @@
 import { Navigate, Outlet } from 'react-router'
 import useToast from './useToast'
-import { useCallback, useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { me_url } from '../Endpoints/Auth'
 
 const PrivateRoutes = () => {
-  let auth = {'token':false}
+  const [isAuth,setIsAuth] = useState(false)
   const {showToast} = useToast()
-  const displayToast = useCallback(()=>{
-    if(!auth.token){
+
+  const getMe = async()=>{
+    try{
+      const data = await fetch(me_url,{
+        method: "POST",
+        credentials: "include",
+      })
+      const response = await data.json();
+      console.log("🔵 Response from getMe:", response);
+      if(response.success){
+        console.log("🔵 User is authenticated:", response);
+        setIsAuth(true);
         showToast({
-            message: 'You need to login first',
-            variant: 'error',
-            position: 'bottom-right',
-            duration: 4000
-        })
+          message: response.message,
+          variant: "success",
+        });
+      }else{
+        setIsAuth(false);
+        showToast({
+          message: "Please login to continue",
+          variant: "error",
+        });
       }
-  },[])
+    }catch(error:any){
+      showToast({
+        message: "Failed to authenticate user",
+        variant: "error",
+      });
+    }
+  }
  
   useEffect(()=>{
-    setTimeout(() => {
-        displayToast();
-    }, 1000);
+    getMe();
   },[])
 
+  if(!isAuth) {
+    return null;
+  }
+
 return (
-    auth.token ? <Outlet/> : <Navigate to='/'/>
+    isAuth ? <Outlet/> : <Navigate to='/'/>
   )
 }
 
