@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 interface ButtonProps {
     label: string;
@@ -10,6 +10,7 @@ interface ButtonProps {
     type?: "button" | "submit" | "reset";
     startIcon?: React.ReactNode;
     endIcon?: React.ReactNode;
+    loading?: boolean;
 }
 
 const btnTypes = {
@@ -26,6 +27,11 @@ const btnSizes = {
 
 const defaultStyles = "rounded-lg font-sans focus:outline-none transition-all duration-400 self-start";
 
-export default function CtaBtn({className,type,variant="primary",size="medium",onClick,label,disabled=false, startIcon, endIcon}: ButtonProps) {
-  return <button disabled={disabled} className={`${btnTypes[variant]} ${btnSizes[size]} ${className} ${defaultStyles} focus:outline-none`} onClick={onClick}><span className='flex items-center gap-2'>{startIcon}{label}{endIcon}</span></button>
+export default function CtaBtn({className,type,variant="primary",size="medium",onClick,label,disabled=false, startIcon, endIcon, loading}: ButtonProps) {
+    if (loading) {
+        return (
+            <button disabled={true} className={`${btnTypes[variant]} ${btnSizes[size]} ${className} ${defaultStyles} focus:outline-none  opacity-60`} onClick={onClick}><span className='flex items-center gap-2'>{startIcon}{"Loading..."}{endIcon}</span></button>
+        );
+    }
+  return <button disabled={false} className={`${btnTypes[variant]} ${btnSizes[size]} ${className} ${defaultStyles} focus:outline-none`} onClick={onClick}><span className='flex items-center gap-2'>{startIcon}{label}{endIcon}</span></button>
 }

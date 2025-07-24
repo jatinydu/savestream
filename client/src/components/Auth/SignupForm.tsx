@@ -18,11 +18,14 @@ export default function SignupForm(props:AuthCommonProps) {
     username:"", password:""
   });
 
+  const [loading, setLoading] = useState<boolean>(false);
+
   const nameRef = useRef<any>(null);
   const passwordRef = useRef<any>(null);
 
   const handlesubmit = async(e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     const name = nameRef.current.value;
     const password = passwordRef.current.value;
     setError({
@@ -60,7 +63,7 @@ export default function SignupForm(props:AuthCommonProps) {
         throw new Error(res.message || "Something went wrong!");
       }
 
-      
+      setLoading(false);
 
       showToast({
         variant:"success",
@@ -69,6 +72,7 @@ export default function SignupForm(props:AuthCommonProps) {
       console.log("res: ",res);
     }catch(error:any){
       console.log(error.message);
+      setLoading(false);
       showToast({
         variant:"error",
         message:error.message || "Something went wrong!"
@@ -76,7 +80,6 @@ export default function SignupForm(props:AuthCommonProps) {
     }
   }
 
-  
   return (
     <div className='lg:w-[28vw] md:w-[50vw] w-[90vw] flex flex-col p-4 px-8 border-2 border-gray-200 py-6 mt-6 rounded-2xl'>
        <h4 className='font-serif font-semibold text-2xl mb-3'>Signup for free</h4>
@@ -85,7 +88,7 @@ export default function SignupForm(props:AuthCommonProps) {
           { error.username && <p className="text-red-500 transition-all duration-500">{error.username}</p>}
           <CreateInput reference={passwordRef}  startIcon={<Lock size={15} color="#99a1af"/>} required={true} type="password" label='Password' placeholder='Enter your password' tagType='input' className='h-[2.5rem] focus-within:ring-2 focus-within:ring-primary rounded-sm border-2 border-gray-100'/>
           { error.password && <p className="text-red-500 transition-all duration-500">{error.password}</p>}
-          <CtaBtn type="submit" label='Create Account' size='large' onClick={(()=>{})} className='w-full flex justify-center'/>
+          <CtaBtn loading={loading} type="submit" label='Create Account' size='large' onClick={(()=>{})} className='w-full flex justify-center'/>
           <div className='w-full h-[2px] bg-gray-200 my-2'></div>
           <p className='text-center text-gray-400'>Already have an account? <Link to="/" className="text-primary-light">signin</Link></p>
        </form>
