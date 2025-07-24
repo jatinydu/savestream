@@ -14,7 +14,7 @@ export default function LoginForm(props:AuthCommonProps) {
           <Link to="/" className='text-sm text-primary-light font-medium'>Forgot Password?</Link>
           <CtaBtn label='Sign in' size='large' onClick={(()=>{})} className='w-full flex justify-center'/>
           <div className='w-full h-[2px] bg-gray-200 my-2'></div>
-          <p className='text-center text-gray-400'>Dont have an account? <Link to="/" className="text-primary-light">Sign up</Link></p>
+          <p className='text-center text-gray-400'>Dont have an account? <Link to="/signup" className="text-primary-light">Sign up</Link></p>
        </form>
     </div>
   )
