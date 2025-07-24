@@ -56,6 +56,16 @@ export default function SignupForm(props:AuthCommonProps) {
         })
       })
       const res = await data.json();
+      if(!res.success){
+        throw new Error(res.message || "Something went wrong!");
+      }
+
+      
+
+      showToast({
+        variant:"success",
+        message:res.message || "Account created successfully!"
+      })
       console.log("res: ",res);
     }catch(error:any){
       console.log(error.message);
