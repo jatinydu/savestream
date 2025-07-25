@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import { ENV } from "../config";
 import { User } from "../models";
 import { generateAuthToken } from "../utils";
+import jwt from "jsonwebtoken";
 
 export const login = async (req: Request, res: Response) => {
   try {
@@ -131,9 +132,21 @@ export const signup = async (req: Request, res: Response) => {
       },
     });
   } catch (error: any) {
-    console.error("🔴 Signup error:", error.message);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ success: false, message: "Internal server error" });
   }
 };
+
+export const isUserAuthenticated = async (req: Request, res: Response) => {
+  const token = req.cookies.token;
+
+  if (!token) return res.status(StatusCodes.UNAUTHORIZED).json({success:false, message: 'Unauthorized user!' });
+ 
+  try {
+    const decoded = jwt.verify(token, ENV.JWT_SECRET);
+    return res.status(StatusCodes.OK).json({success:true, message:"user authenticated succesfully!", data: decoded });
+  } catch (err) {
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({success:false, message: 'Invalid or expired token' });
+  }
+} 

@@ -6,7 +6,7 @@ import { Mail, UserRound, Lock } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import useToast from '../../hooks/useToast';
 import { signup_url } from '../../Endpoints/Auth';
-
+import { signup } from '../../services/auth';
 interface errorProps{
   username:string,
   password:string,
@@ -48,17 +48,8 @@ export default function SignupForm(props:AuthCommonProps) {
     }
 
     try{
-      const data = await fetch(signup_url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          username: name,
-          password
-        })
-      })
-      const res = await data.json();
+      const res = await signup({name, password, signup_url});
+      
       if(!res.success){
         throw new Error(res.message || "Something went wrong!");
       }
