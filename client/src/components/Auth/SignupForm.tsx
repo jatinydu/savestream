@@ -1,9 +1,8 @@
 import { Link } from 'react-router';
-import { type AuthCommonProps} from '../../pages/AuthForm';
 import CreateInput from '../createPost/CreateInput';
 import CtaBtn from '../lib/CtaBtn';
-import { Mail, UserRound, Lock } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { UserRound, Lock } from 'lucide-react';
+import { useRef, useState } from 'react';
 import useToast from '../../hooks/useToast';
 import { signup_url } from '../../Endpoints/Auth';
 import { signup } from '../../services/auth';
@@ -12,7 +11,7 @@ interface errorProps{
   password:string,
 }
 
-export default function SignupForm(props:AuthCommonProps) {
+export default function SignupForm() {
   const {showToast} = useToast();
   const [error,setError] = useState<errorProps>({
     username:"", password:""
@@ -49,7 +48,7 @@ export default function SignupForm(props:AuthCommonProps) {
 
     try{
       const res = await signup({name, password, signup_url});
-      
+
       if(!res.success){
         throw new Error(res.message || "Something went wrong!");
       }

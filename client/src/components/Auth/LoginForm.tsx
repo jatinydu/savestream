@@ -1,4 +1,3 @@
-import {type AuthCommonProps} from '../../pages/AuthForm';
 import CreateInput from '../createPost/CreateInput';
 import { Mail, Lock } from 'lucide-react';
 import { Link } from 'react-router';
@@ -10,7 +9,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router';
 import { login as signin } from '../../services/auth';
 
-export default function LoginForm(props:AuthCommonProps) {
+export default function LoginForm() {
   const [loading, setLoading] = useState(false);
   const { showToast} = useToast();
   const { login } = useAuth();
