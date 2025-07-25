@@ -8,6 +8,7 @@ import useToast from '../../hooks/useToast';
 import { login_url } from '../../Endpoints/Auth';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router';
+import { login as signin } from '../../services/auth';
 
 export default function LoginForm(props:AuthCommonProps) {
   const [loading, setLoading] = useState(false);
@@ -29,10 +30,20 @@ export default function LoginForm(props:AuthCommonProps) {
       username: '',
       password: ''
     });
-    const username = usernameRef.current?.value;
-    const password = passwordRef.current?.value;
 
-    if(username?.length === 0){
+    if(!usernameRef.current || !passwordRef.current){
+      setLoading(false);
+      showToast({
+        variant: 'error',
+        message: 'An error occurred. Please try again later.'
+      });
+      return;
+    }
+
+    const username = usernameRef.current.value;
+    const password = passwordRef.current.value;
+
+    if(username?.length === 0 || !username){
       setLoading(false);
       setError((prev)=>({
         ...prev,
@@ -40,7 +51,7 @@ export default function LoginForm(props:AuthCommonProps) {
       }))
     }
 
-    if(password?.length === 0){
+    if(password?.length === 0 || !password){
       setLoading(false);
       setError((prev)=>({
         ...prev,
@@ -49,30 +60,14 @@ export default function LoginForm(props:AuthCommonProps) {
     }
 
     try{
-
-       console.log('Logging in with:', { username, password });
-
-       const data = await fetch(login_url, {
-         method:'POST',
-         headers:{
-          'Content-Type':'application/json'
-         },
-         body: JSON.stringify({
-          username,
-          password
-         }),
-         credentials: 'include' // Include cookies in the request
-       })
-
-       const res = await data.json();
+       
+      const res = await signin({username, password, login_url});
 
        if(res.success){
         setError({
           username: '',
           password: ''
         })
-
-        console.log(res);
 
         login({
           username: res.user.username
