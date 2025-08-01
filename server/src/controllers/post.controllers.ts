@@ -31,17 +31,29 @@ export const createPost = async (req: ModRequest, res: Response) => {
         await session.abortTransaction(); 
         return res.status(StatusCodes.UNAUTHORIZED).json({ success: false, message: 'User not authenticated' });
       }
+
+      const tagIds: mongoose.Types.ObjectId[] = [];
+
+      for (const tagName of tags) {
+        let tag = await Tag.findOne({ name: tagName });
   
-      const newPost = new Post({ title, type, tags, link, user: user_id, desc });
-      const savedPost = await newPost.save({ session });
+        if (!tag) {
+          tag = await Tag.create({ name: tagName });
+        }
   
-      if (tags && tags.length > 0) {
-        await Tag.updateMany(
-          { _id: { $in: tags } },
-          { $push: { posts: savedPost._id } },
-          { session } 
-        );
+        tagIds.push(tag._id);
       }
+  
+      const newPost = new Post({ title, type, tags:tagIds, link, user: user_id, desc });
+      const savedPost = await newPost.save({ session });
+
+      await Promise.all(
+      tagIds.map(async (tagId) => {
+        await Tag.findByIdAndUpdate(tagId, {
+          $addToSet: { posts: newPost._id }
+        });
+      })
+    );
 
       await User.updateOne(
         { _id: user_id },
