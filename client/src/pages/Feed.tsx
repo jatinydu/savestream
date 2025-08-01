@@ -7,7 +7,7 @@ export default function Feed() {
       <FeedHeader />
       {/* Card container */}
       <div className="py-5 h-auto flex flex-wrap gap-3">
-        <Card/>
+        <Card tags={[]} title="The Future of AI Personal Knowledge Management" description="Learn the PARA method for creating a digital extension of your mind." date="01/13/2025" />
       </div>
     </div>
   )
