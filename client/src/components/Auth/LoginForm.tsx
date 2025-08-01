@@ -78,7 +78,7 @@ export default function LoginForm() {
           message: res.message || 'Login successful!'
         });
 
-        navigate('/feed'); 
+        navigate('/'); 
        }
         else{
           setLoading(false);

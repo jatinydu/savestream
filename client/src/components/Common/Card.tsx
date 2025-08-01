@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react'
 import { Link } from 'react-router'
 import ActionBtn from '../lib/ActionBtn'
 import { Star, Globe, Calendar, ExternalLink } from 'lucide-react'

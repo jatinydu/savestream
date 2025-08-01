@@ -7,7 +7,6 @@ import Spinner from "../components/lib/Spinner";
 export default function Feed() {
   const { posts, loading } = usePost();
 
-
   useEffect(() => {
      console.log('Posts in Feed:', posts);
    }, [posts]);

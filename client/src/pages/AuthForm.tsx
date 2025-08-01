@@ -21,7 +21,7 @@ export default function AuthForm(props:AuthFormProps) {
         <h3 className='font-serif font-semibold text-2xl'>{props.title}</h3>
         <p className='text-md font-sens font-medium text-gray-500'>{props.desc}</p>
         {
-            props.type === "signup" ? <SignupForm type={props.type}/> : props.type === "login" ? <LoginForm type={props.type} /> : null
+            props.type === "signup" ? <SignupForm /> : props.type === "login" ? <LoginForm /> : null
         }
       </div>
     </div>

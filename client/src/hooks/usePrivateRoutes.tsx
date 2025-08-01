@@ -1,22 +1,25 @@
-import { Navigate, Outlet } from 'react-router'
+import { Navigate, Outlet, useNavigate } from 'react-router'
 import useToast from './useToast'
 import { useEffect, useState } from 'react'
 import { me_url } from '../Endpoints/Auth'
+import Spinner from '../components/lib/Spinner'
 
 const PrivateRoutes = () => {
   const [isAuth,setIsAuth] = useState(false)
   const {showToast} = useToast()
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
   const getMe = async()=>{
     try{
+      setLoading(true);
       const data = await fetch(me_url,{
         method: "POST",
         credentials: "include",
       })
       const response = await data.json();
-      console.log("🔵 Response from getMe:", response);
+      console.log("Response from getMe:", response);
       if(response.success){
-        console.log("🔵 User is authenticated:", response);
         setIsAuth(true);
         showToast({
           message: response.message,
@@ -28,8 +31,11 @@ const PrivateRoutes = () => {
           message: "Please login to continue",
           variant: "error",
         });
+        navigate('/login');
       }
+      setLoading(false);
     }catch(error:any){
+      setLoading(false);
       showToast({
         message: "Failed to authenticate user",
         variant: "error",
@@ -41,12 +47,12 @@ const PrivateRoutes = () => {
     getMe();
   },[])
 
-  if(!isAuth) {
-    return null;
+  if(loading) {
+    return <Spinner/>
   }
 
 return (
-    isAuth ? <Outlet/> : <Navigate to='/'/>
+    isAuth ? <Outlet/> : <Navigate to='/login'/>
   )
 }
 

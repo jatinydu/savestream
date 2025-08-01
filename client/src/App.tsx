@@ -10,9 +10,9 @@ function App() {
         <Navbar />
         <Routes>
           <Route element={<PrivateRoutes/>}>
-             <Route path="/feed" element={<Feed/>} />
+             <Route path="/" element={<Feed/>} index />
           </Route>
-          <Route path="/" element={<AuthForm type="login" title="Welcome back!" desc="Login to your account"/>} />
+          <Route path="/login" element={<AuthForm type="login" title="Welcome back!" desc="Login to your account"/>} />
           <Route path="/signup" element={<AuthForm type="signup" title="Create a free account" desc="Join us today!"/>} />
         </Routes>
     </div>
