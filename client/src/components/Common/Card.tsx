@@ -4,7 +4,7 @@ import ActionBtn from '../lib/ActionBtn'
 import { Star, Globe, Calendar, ExternalLink } from 'lucide-react'
 import Tag from '../lib/Tag'
 
-export default function Card({link="https://savestream.vercel.app",linkLabel, title, description, tags, date}: { link?: string, linkLabel?: string, title: string, description?: string, tags: string[], date: string }) {
+export default function Card({link="https://savestream.vercel.app",linkLabel="example.com", title="Title is Not Working", description, tags=[], date="01/01/2025", type, user}: { link?: string, linkLabel?: string, title: string, description?: string, tags: string[], date: string, type: 'tweet' | 'youtube' | 'article', user?: Object }) {
   return (
     <div className='w-[450px] border-1 border-gray-300 rounded-2xl py-7 px-7'>
       {/* Card Header */}
