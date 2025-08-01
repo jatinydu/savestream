@@ -19,7 +19,7 @@ export const createPost = async (req: ModRequest, res: Response) => {
     session.startTransaction(); 
   
     try {
-      const { title, type, tags, link } = req.body;
+      const { title, type, tags, link, desc } = req.body;
       const user_id = req.user?.id;
   
       if (!title || !type || !tags || !link) {
@@ -32,7 +32,7 @@ export const createPost = async (req: ModRequest, res: Response) => {
         return res.status(StatusCodes.UNAUTHORIZED).json({ success: false, message: 'User not authenticated' });
       }
   
-      const newPost = new Post({ title, type, tags, link, user: user_id });
+      const newPost = new Post({ title, type, tags, link, user: user_id, desc });
       const savedPost = await newPost.save({ session });
   
       if (tags && tags.length > 0) {

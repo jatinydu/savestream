@@ -4,6 +4,7 @@ import { Schema, model, Document } from 'mongoose';
 interface IPost extends Document {
     title: string;
     type: string;
+    desc?: string; // Optional description field
     link: string;
     tags: string[];
     is_deleted: boolean;
@@ -15,6 +16,7 @@ interface IPost extends Document {
 
 const postSchema = new Schema<IPost>({
     title: { type: String, required: true, unique: true },
+    desc: { type: String, required: false },
     type: { type: String, enum:["tweet","youtube","article"], required: true },
     is_deleted: { type: Boolean, default: false },
     link: { type: String, required: true },
