@@ -4,7 +4,7 @@ import Toggle from './Toggle';
 import { Star } from 'lucide-react'
 export default function Navbar() {
   return (
-    <div className="py-6 w-full fixed top-0 left-0 z-40 flex items-center justify-between px-10">
+    <div className="py-6 w-screen fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-10">
       {/* Img */}
       <div className='flex items-center'>
         <img src={Logo} alt="savestream_logo" className="h-10 w-10 rounded-full" />
