@@ -5,11 +5,15 @@ import { usePost } from '../hooks/usePost';
 import Spinner from "../components/lib/Spinner";
 
 export default function Feed() {
-  const { posts, loading } = usePost();
+  const { posts, loading, fetchPosts } = usePost();
 
   useEffect(() => {
-     console.log('Posts in Feed:', posts);
-   }, [posts]);
+    const fetchData = async () => {
+      await fetchPosts();
+    };
+
+    fetchData();
+   }, []);
 
   if(loading) {
     return <Spinner/>
@@ -17,7 +21,7 @@ export default function Feed() {
 
   if( posts.length === 0) {
     return (
-      <div  className='w-full h-[100vh] flex justify-center items-center'>
+      <div className='w-full h-[100vh] flex justify-center items-center'>
            <p>No Posts Found...</p>
       </div>
     )

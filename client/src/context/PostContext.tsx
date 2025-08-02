@@ -27,6 +27,7 @@ export interface Post {
     setPosts: React.Dispatch<React.SetStateAction<Post[]>>;
     addPost: (post: Post) => void;
     removePost: (id: string) => void;
+    fetchPosts: () => Promise<void>;
     loading: boolean;
     setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   }
@@ -47,6 +48,7 @@ export interface Post {
         setLoading(true);
         try {
             const postArray = await getPosts();
+            console.log('context Fetched Posts:', postArray);
             setPosts(postArray);
             showToast({
                 variant: 'success',
@@ -62,14 +64,9 @@ export interface Post {
             setLoading(false);
         }
     }
-
-    useEffect(()=>{
-        fetchPosts();
-        console.log('Posts fetched successfully');
-    },[])
   
     return (
-      <PostContext.Provider value={{ posts, setPosts, addPost, removePost, loading, setLoading }}>
+      <PostContext.Provider value={{ posts, setPosts, addPost, removePost, loading, setLoading, fetchPosts }}>
         {children}
       </PostContext.Provider>
     );
