@@ -28,7 +28,7 @@ export default function Feed() {
   }
 
   return (
-    <div className='w-full min-h-[100vh] pt-[7%] px-10'>
+    <div className='w-full min-h-[100vh] lg:pt-[10%] md:pt-[15%] pt-[28%] px-10'>
       <FeedHeader />
       {/* Card container */}
       <div className="py-8 h-auto flex flex-wrap gap-8">
