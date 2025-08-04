@@ -1,5 +1,4 @@
-import React, { createContext, useEffect, useState, type ReactNode } from 'react';
-import { posts_url } from '../Endpoints/Feed';
+import React, { createContext, useState, type ReactNode } from 'react';
 import { getPosts } from '../services/feed';
 import useToast from '../hooks/useToast';
 interface TagProps {

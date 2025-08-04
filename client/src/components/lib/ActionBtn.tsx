@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface ButtonProps {
-    onClick: () => void;
+    onClick: (e:any) => void;
     disabled?: boolean;
     variant?: 'add' | 'delete' | 'ghost' | 'quick';
     size?: 'small' | 'medium' | 'large' | 'xsmall';

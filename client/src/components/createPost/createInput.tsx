@@ -30,7 +30,7 @@ export default function CreateInput(props:CreateInputProps) {
         </span>
       </span>
       {
-        props.tagType === 'input' ?  <AiInput reference={props.reference} placeholder={props.placeholder} startIcon={props.startIcon} endIcon={props.endIcon} type={props.type} className={`w-full rounded-xl ${props.className}`}/> : props.tagType === 'textarea' ? <TextArea className="w-full rounded-xl" /> : props.tagType === "dropdown" ? <SearchInput/> : null
+        props.tagType === 'input' ?  <SimpleInput reference={props.reference} placeholder={props.placeholder} type={props.type} className={`w-full rounded-xl ${props.className}`}/> : props.tagType === 'textarea' ? <TextArea className="w-full rounded-xl" /> : props.tagType === "dropdown" ? <SearchInput/> : null
       }
     </div>
   )
