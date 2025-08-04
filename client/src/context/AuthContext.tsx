@@ -11,6 +11,8 @@ interface AuthContextProps {
   login: (user: User) => void;
   logout: () => void;
   setUser: (user: User) => void;
+  isAuthenticated?: boolean;
+  setIsAuthenticated: (auth:boolean) => void;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -20,9 +22,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     username: '',
   });
 
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+
   const login = (userData: User) => {
     setUser(userData);
-    localStorage.setItem('User', JSON.stringify(userData));
+    setIsAuthenticated(true);
+    // localStorage.setItem('User', JSON.stringify(userData));
   };
 
   const logout = () => {
@@ -33,7 +38,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, setUser }}>
+    <AuthContext.Provider value={{ user, login, logout, setUser, isAuthenticated, setIsAuthenticated }}>
       {children}
     </AuthContext.Provider>
   );

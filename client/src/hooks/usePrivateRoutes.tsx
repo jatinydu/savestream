@@ -3,12 +3,14 @@ import useToast from './useToast'
 import { useEffect, useState } from 'react'
 import { me_url } from '../Endpoints/Auth'
 import Spinner from '../components/lib/Spinner'
+import { useAuth } from '../context/AuthContext';
 
 const PrivateRoutes = () => {
   const [isAuth,setIsAuth] = useState(false)
   const {showToast} = useToast()
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const { setIsAuthenticated } = useAuth();
 
   const getMe = async()=>{
     try{
@@ -21,6 +23,7 @@ const PrivateRoutes = () => {
       console.log("Response from getMe:", response);
       if(response.success){
         setIsAuth(true);
+        setIsAuthenticated(true); 
         showToast({
           message: response.message,
           variant: "success",
