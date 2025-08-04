@@ -24,11 +24,14 @@ export default function LoginForm() {
 
   const loginHandler=async(e:FormEvent)=>{
     e.preventDefault();
+    console.log('inside login handler');
     setLoading(true);
     setError({
       username: '',
       password: ''
     });
+
+    console.log(usernameRef);
 
     if(!usernameRef.current || !passwordRef.current){
       setLoading(false);
@@ -39,8 +42,12 @@ export default function LoginForm() {
       return;
     }
 
+    console.log('43');
+
     const username = usernameRef.current.value;
     const password = passwordRef.current.value;
+
+    console.log("Username:", username);
 
     if(username?.length === 0 || !username){
       setLoading(false);
@@ -61,6 +68,8 @@ export default function LoginForm() {
     try{
        
       const res = await signin({username, password, login_url});
+
+      console.log("Login response:", res);
 
        if(res.success){
         setError({

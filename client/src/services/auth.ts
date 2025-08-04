@@ -10,10 +10,14 @@ export const signup=async(para:{name:string,password:string,signup_url:string})=
         })
       })
       const res = await data.json();
+
+      console.log("service : ",res) 
+
       return res;
 }
 
 export const login=async(para:{username:string,password:string,login_url:string})=>{
+    console.log("inside login service:");
     const data = await fetch(para.login_url, {
         method:'POST',
         headers:{
@@ -27,5 +31,7 @@ export const login=async(para:{username:string,password:string,login_url:string}
       })
 
       const res = await data.json();
+
+      console.log("service : ",res) 
       return res;
 }

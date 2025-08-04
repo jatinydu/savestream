@@ -10,7 +10,7 @@ const PrivateRoutes = () => {
   const {showToast} = useToast()
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-  const { setIsAuthenticated } = useAuth();
+  const { setIsAuthenticated, isAuthenticated } = useAuth();
 
   const getMe = async()=>{
     try{
@@ -47,7 +47,9 @@ const PrivateRoutes = () => {
   }
  
   useEffect(()=>{
-    getMe();
+    if(!isAuthenticated){
+      getMe();
+    }
   },[])
 
   if(loading) {

@@ -28,10 +28,10 @@ const simple = "border-2 border-gray-200 focus:border-blue-600 focus:ring-blue-6
 const ai = "border-2 border-gray-100 shadow-sm text-gray-500 focus:border-blue-600 focus:ring-blue-600";
 const defaultStyles = "h-10 px-3 rounded-2xl text-black placeholder:font-300";
 
-export function SimpleInput({type,placeholder,value,className,required,name,size="md"}: InputProps) {
+export function SimpleInput({type,placeholder,reference,value,className,required,name,size="md"}: InputProps) {
   return (
     <div>
-      <input type={type} placeholder={placeholder} value={value} className={`${defaultStyles} ${className} ${simple} ${sizeStyles[size]}`} required={required} name={name} />
+      <input ref={reference} type={type} placeholder={placeholder} value={value} className={`${defaultStyles} ${className} ${simple} ${sizeStyles[size]}`} required={required} name={name} />
     </div>
   )
 }
