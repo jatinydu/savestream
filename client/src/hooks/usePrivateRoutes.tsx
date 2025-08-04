@@ -47,17 +47,19 @@ const PrivateRoutes = () => {
   }
  
   useEffect(()=>{
-    if(!isAuthenticated){
       getMe();
-    }
   },[])
 
   if(loading) {
     return <Spinner/>
   }
 
+  if(!isAuth) {
+    return <Navigate to='/login' replace />;
+  }
+
 return (
-    isAuth ? <Outlet/> : <Navigate to='/login'/>
+    <Outlet/> 
   )
 }
 
