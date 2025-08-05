@@ -32,19 +32,15 @@ export default function AddPostModel({className}: {className?: string}) {
   const [ tags, setTags ] = useState<Tag[]>([]);
 
   const fetchTagSuggestions = async(query: string) => {
-    console.log(query);
     if (!query.trim() || query.trim().length<2) return;
 
     try {
       setLoading(true);
-      console.log('hit for api call....');
       const res = await fetch(`${Tags_URl}/?q=${query}`,{
         method: "GET",
         credentials:'include'
       });
-      console.log('res: ',res);
       const data = await res.json();
-      console.log(data);
       if (!res.ok) {
         throw new Error(data.message || "Failed to fetch tags");
       }
@@ -69,16 +65,11 @@ export default function AddPostModel({className}: {className?: string}) {
 
 
   useEffect(() => {
-    console.log('query : ', query);
     debouncedSearch(query);
   },[query]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('input chnage : ', e.target.value);
     setQuery(e.target.value);
-    setTimeout(()=>{
-      console.log("suggestion:", suggestions);
-    },3000)
   };
 
   const handleAddTag = (tag: Tag) => {

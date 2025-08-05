@@ -65,8 +65,6 @@ export const queryTags = async (req: Request, res: Response) => {
   try{
     const query = (req.query.q as string)?.trim();
 
-    console.log('query : ', query);
-
     if (!query || query.length < 2) {
       return res
         .status(StatusCodes.BAD_REQUEST)
@@ -76,8 +74,6 @@ export const queryTags = async (req: Request, res: Response) => {
     const tags = await Tag.find({
       name: { $regex: query, $options: 'i' }, 
     }).limit(10);
-
-    console.log('tags : ',tags);
 
     if( tags.length === 0) {
       return res

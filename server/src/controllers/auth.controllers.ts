@@ -141,13 +141,10 @@ export const signup = async (req: Request, res: Response) => {
 export const isUserAuthenticated = async (req: Request, res: Response) => {
   const token = req.cookies.token;
 
-  console.log('token : ',token);
-
   if (!token) return res.status(StatusCodes.UNAUTHORIZED).json({success:false, message: 'Unauthorized user!' });
  
   try {
     const decoded = jwt.verify(token, ENV.JWT_SECRET);
-    console.log('decode : ',decoded);
     return res.status(StatusCodes.OK).json({success:true, message:"user authenticated succesfully!", data: decoded });
   } catch (err) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({success:false, message: 'Invalid or expired token' });

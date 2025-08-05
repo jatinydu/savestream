@@ -17,8 +17,7 @@ function App() {
     if(e.target.tagName === "DIV" || e.target.classList.contains('closeModel')) setModelOpen(false);
   }
 
-  function openModel(e:any){
-    console.log("open model called !")
+  function openModel(){
     setModelOpen(true);
   }
   return (
