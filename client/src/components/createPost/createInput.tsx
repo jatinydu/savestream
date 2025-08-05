@@ -15,7 +15,8 @@ interface CreateInputProps {
   reference?: React.Ref<HTMLInputElement>;
   className?: string;
   outerClass?: string;
-  suggestions?: { _id: string; name: string }[]; 
+  suggestions?: { id: string; name: string, created_at:string, updated_at:string }[]; 
+  handleKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 export default function CreateInput(props:CreateInputProps) {
@@ -32,7 +33,7 @@ export default function CreateInput(props:CreateInputProps) {
         </span>
       </span>
       {
-        props.tagType === 'input' ?  <SimpleInput reference={props.reference} placeholder={props.placeholder} type={props.type} className={`w-full rounded-xl ${props.className}`}/> : props.tagType === 'textarea' ? <TextArea className="w-full rounded-xl" /> : props.tagType === "dropdown" ? <SearchInput reference={props.reference} placeholder={props.placeholder} className={props.className} suggestions={props.suggestions}/> : null
+        props.tagType === 'input' ?  <SimpleInput reference={props.reference} placeholder={props.placeholder} type={props.type} className={`w-full rounded-xl ${props.className}`}/> : props.tagType === 'textarea' ? <TextArea className="w-full rounded-xl" /> : props.tagType === "dropdown" ? <SearchInput handleKeyDown={props.handleKeyDown} onChange={props.onChange} reference={props.reference} placeholder={props.placeholder} className={props.className} suggestions={props.suggestions}/> : null
       }
     </div>
   )

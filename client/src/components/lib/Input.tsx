@@ -11,6 +11,8 @@ interface InputProps {
   name?: string;
   size?: "sm" | "md" | "lg";
   reference?: React.Ref<HTMLInputElement>;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 interface AiProps extends InputProps {
@@ -28,10 +30,10 @@ const simple = "border-2 border-gray-200 focus:border-blue-600 focus:ring-blue-6
 const ai = "border-2 border-gray-100 shadow-sm text-gray-500 focus:border-blue-600 focus:ring-blue-600";
 const defaultStyles = "h-10 px-3 rounded-2xl";
 
-export function SimpleInput({type,placeholder,reference,value,className,required,name,size="md"}: InputProps) {
+export function SimpleInput({type,placeholder,handleKeyDown,reference,value,className,required,name,size="md",onChange}: InputProps) {
   return (
     <div>
-      <input ref={reference} type={type} placeholder={placeholder} value={value} className={`${defaultStyles} ${className} ${simple} ${sizeStyles[size]}`} required={required} name={name} />
+      <input onChange={onChange} onKeyDown={handleKeyDown} ref={reference} type={type} placeholder={placeholder} value={value} className={`${defaultStyles} ${className} ${simple} ${sizeStyles[size]}`} required={required} name={name} />
     </div>
   )
 }
@@ -86,14 +88,14 @@ export const Dropdown=({options,placeholder="select a option",onSelect}:Dropdown
           <button
             name="dropdown-button"
             onClick={modelToggle}
-            className="w-full px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none"
+            className="w-full px-4 py-[11px] bg-white border border-gray-300 rounded-xl shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none"
           >
             {selected ? selected.label : placeholder}
           </button>
         </div>
   
         {isOpen && (
-          <div className="absolute mt-2 w-full max-h-[150px] overflow-y-auto rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
+          <div className="absolute mt-2 w-full max-h-[150px] overflow-y-auto rounded-md shadow-lg bg-white ring-2 ring-primary-light z-10">
             <div className="py-1 text-left">
               {options.map((option) => (
                 <button
