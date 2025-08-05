@@ -18,6 +18,7 @@ function App() {
   }
 
   function openModel(e:any){
+    console.log("open model called !")
     setModelOpen(true);
   }
   return (

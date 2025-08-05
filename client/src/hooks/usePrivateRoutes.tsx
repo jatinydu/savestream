@@ -20,7 +20,6 @@ const PrivateRoutes = () => {
         credentials: "include",
       })
       const response = await data.json();
-      console.log("Response from getMe:", response);
       if(response.success){
         setIsAuth(true);
         setIsAuthenticated(true); 

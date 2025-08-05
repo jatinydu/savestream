@@ -12,7 +12,7 @@ import { login as signin } from '../../services/auth';
 export default function LoginForm() {
   const [loading, setLoading] = useState(false);
   const { showToast} = useToast();
-  const { login } = useAuth();
+  const { login, setIsAuthenticated } = useAuth();
   const navigate = useNavigate();
   const [error,setError] = useState({
     username: '',
@@ -24,14 +24,11 @@ export default function LoginForm() {
 
   const loginHandler=async(e:FormEvent)=>{
     e.preventDefault();
-    console.log('inside login handler');
     setLoading(true);
     setError({
       username: '',
       password: ''
     });
-
-    console.log(usernameRef);
 
     if(!usernameRef.current || !passwordRef.current){
       setLoading(false);
@@ -42,12 +39,8 @@ export default function LoginForm() {
       return;
     }
 
-    console.log('43');
-
     const username = usernameRef.current.value;
     const password = passwordRef.current.value;
-
-    console.log("Username:", username);
 
     if(username?.length === 0 || !username){
       setLoading(false);
@@ -69,8 +62,6 @@ export default function LoginForm() {
        
       const res = await signin({username, password, login_url});
 
-      console.log("Login response:", res);
-
        if(res.success){
         setError({
           username: '',
@@ -82,12 +73,8 @@ export default function LoginForm() {
         })
 
         setLoading(false);
-        showToast({
-          variant: 'success',
-          message: res.message || 'Login successful!'
-        });
 
-        navigate('/'); 
+        navigate('/');
        }
         else{
           setLoading(false);

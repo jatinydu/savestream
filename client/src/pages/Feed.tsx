@@ -8,7 +8,6 @@ export default function Feed() {
   const { posts, loading, fetchPosts } = usePost();
 
   useEffect(() => {
-    console.log("Fetching posts...");
     const fetchData = async () => {
       await fetchPosts();
     };
