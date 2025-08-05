@@ -1,6 +1,6 @@
 import { login, signup,isUserAuthenticated } from './auth.controllers';
 import { createPost, getPosts, deletePost } from './post.controllers';
-import { createTag, getTags } from './tag.controllers';
+import { createTag, getTags, queryTags } from './tag.controllers';
 
 export const Auth = {
   login,
@@ -17,4 +17,5 @@ export const Post = {
 export const Tag = {
   createTag,
   getTags,
+  queryTags
 };

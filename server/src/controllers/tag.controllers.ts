@@ -59,3 +59,46 @@ export const getTags = async (req: Request, res: Response) => {
         .json({ success: false, message: "Internal Server Error" })
     }
 }
+
+
+export const queryTags = async (req: Request, res: Response) => {
+  try{
+    const query = (req.query.q as string)?.trim();
+
+    console.log('query : ', query);
+
+    if (!query || query.length < 2) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ success: false, message: "Query must be at least 2 characters" })
+    }
+
+    const tags = await Tag.find({
+      name: { $regex: query, $options: 'i' }, 
+    }).limit(10);
+
+    console.log('tags : ',tags);
+
+    if( tags.length === 0) {
+      return res
+        .status(StatusCodes.OK)
+        .json({ success: true, message: "No tags found", tags: [] })
+    }
+
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: "Tags retrieved successfully",
+      tags: tags.map(tag => ({
+        id: tag._id,
+        name: tag.name,
+        created_at: tag.created_at,
+        updated_at: tag.updated_at,
+      })),
+    })
+  }catch(error: any) {
+    console.error("🔴 Error querying tags:", error.message)
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ success: false, message: "Internal Server Error" })
+  }
+}

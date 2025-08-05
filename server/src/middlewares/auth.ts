@@ -8,6 +8,7 @@ interface authRequest extends Request {
 }
 
 export const auth = async (req:authRequest, res:Response, next:NextFunction) => {
+  console.log(req.cookies);
    const token = req.header('Authorization')?.replace('Bearer ', '') || req.cookies.token || req.body.token; 
    if (!token) {
      return res.status(StatusCodes.UNAUTHORIZED).json({
