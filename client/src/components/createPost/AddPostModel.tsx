@@ -7,6 +7,7 @@ import { Dropdown } from "../lib/Input";
 import debounce from "lodash/debounce";
 import useToast from "../../hooks/useToast";
 import { Tags_URl } from "../../Endpoints";
+import { useUID } from 'react-uid';
 
 const categoryOptions = [
   { label: "Technology", value: "technology" },
@@ -17,7 +18,7 @@ const categoryOptions = [
   { label: "Travel", value: "travel" }
 ]
 
-interface Tag{
+export interface Tag{
   _id: string;
   name: string;
 }
@@ -30,6 +31,8 @@ export default function AddPostModel({className}: {className?: string}) {
   const [ query, setQuery ] = useState('');
   const [ category, setCategory ] = useState("");
   const [ tags, setTags ] = useState<Tag[]>([]);
+  const [ alreadySelected, setAlreadySelected ] = useState<Tag[]>([]);
+  const uid = useUID();
 
   const fetchTagSuggestions = async(query: string) => {
     if (!query.trim() || query.trim().length<2) return;
@@ -73,18 +76,20 @@ export default function AddPostModel({className}: {className?: string}) {
   };
 
   const handleAddTag = (tag: Tag) => {
+    console.log('Adding tag:', tag);
     if (!tags.find((t) => t.name === tag.name)) {
       setTags((prev) => [...prev, tag]);
+        setAlreadySelected((prev:any) => [...prev, tag]);
     }
     setQuery("");
     setSuggestions([]);
     if (tagRef.current) tagRef.current.value = "";
+    console.log(" tags object > ", tags);
   };
 
   const handleAddNewTag = () => {
     if (query && !tags.find((t) => t.name === query)) {
-      const _id = Math.random().toString(36).substring(2, 15); 
-      handleAddTag({ name: query, _id:_id });
+      handleAddTag({ name: query, _id:uid });
     }
   };
 
@@ -93,10 +98,16 @@ export default function AddPostModel({className}: {className?: string}) {
   };
 
   const keyEnterHandler=(e:any)=>{
+    console.log("Key pressed:", e.key);
     if (e.key === "Enter") {
       e.preventDefault();
       handleAddNewTag();
     }
+  }
+
+  const submitHandler = async (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('tags : ',tags);
   }
 
   return (
@@ -113,11 +124,23 @@ export default function AddPostModel({className}: {className?: string}) {
           <CreateInput tagType="input" type="text" label="Title" required={true}/>
           <CreateInput tagType="textarea" type="textarea" label="Notes" required={false} placeholder="Add personal notes or key takeways.."/>
           <Dropdown placeholder="select a category" onSelect={(op)=>{setCategory(op.value)}} options={categoryOptions}/>
-          <CreateInput handleKeyDown={keyEnterHandler} onChange={handleInputChange} className="text-gray-500 text-[15px]" tagType="dropdown" label="Tags" required={true} reference={tagRef} suggestions={suggestions}/>
+          <CreateInput alreadySelected={alreadySelected} handleAddTag={handleAddTag} handleKeyDown={keyEnterHandler} onChange={handleInputChange} className="text-gray-500 text-[15px]" tagType="dropdown" label="Tags" required={true} reference={tagRef} suggestions={suggestions}/>
+          {
+            tags.length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-2">
+                {tags.map((tag) => (
+                  <span key={tag._id} className="bg-gray-200 text-gray-700 px-3 py-1 rounded-full flex items-center gap-2">
+                    {tag.name}
+                    <button type="button" onClick={() => handleRemoveTag(tag.name)} className="text-red-500 hover:text-red-700 cursor-pointer">&times;</button>
+                  </span>
+                ))}
+              </div>
+            )
+          }
       </form>
       <div className="flex gap-4 mt-4">
-        <CtaBtn label="Cancel" className="flex-1 flex justify-center items-center" variant="ghost" size="large" onClick={() => console.log("cancel")}/>
-        <CtaBtn label="Save Resource" className="flex-1 flex justify-center items-center" variant="primary" size="large" onClick={() => console.log("save")}/>
+        <CtaBtn label="Cancel" className="flex-1 flex justify-center items-center" variant="ghost" size="large"/>
+        <CtaBtn label="Save Resource" className="flex-1 flex justify-center items-center" variant="primary" size="large" onClick={submitHandler}/>
       </div>
     </div>
   )

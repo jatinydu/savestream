@@ -1,6 +1,7 @@
 import { AiInput, SimpleInput, TextArea } from "../lib/Input";
 import SearchInput from "../autoComplete/SearchInput";
 import Suggestions from "../autoComplete/Suggestions";
+import type { Tag } from "./AddPostModel";
 
 interface CreateInputProps {
   label?: string;
@@ -17,6 +18,8 @@ interface CreateInputProps {
   outerClass?: string;
   suggestions?: { id: string; name: string, created_at:string, updated_at:string }[]; 
   handleKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  handleAddTag?: (tag: Tag) => void
+  alreadySelected?: Tag[];
 }
 
 export default function CreateInput(props:CreateInputProps) {
@@ -33,7 +36,7 @@ export default function CreateInput(props:CreateInputProps) {
         </span>
       </span>
       {
-        props.tagType === 'input' ?  <SimpleInput reference={props.reference} placeholder={props.placeholder} type={props.type} className={`w-full rounded-xl ${props.className}`}/> : props.tagType === 'textarea' ? <TextArea className="w-full rounded-xl" /> : props.tagType === "dropdown" ? <SearchInput handleKeyDown={props.handleKeyDown} onChange={props.onChange} reference={props.reference} placeholder={props.placeholder} className={props.className} suggestions={props.suggestions}/> : null
+        props.tagType === 'input' ?  <SimpleInput reference={props.reference} placeholder={props.placeholder} type={props.type} className={`w-full rounded-xl ${props.className}`}/> : props.tagType === 'textarea' ? <TextArea className="w-full rounded-xl" /> : props.tagType === "dropdown" ? <SearchInput alreadySelected={props.alreadySelected} handleAddTag={props.handleAddTag} handleKeyDown={props.handleKeyDown} onChange={props.onChange} reference={props.reference} placeholder={props.placeholder} className={props.className} suggestions={props.suggestions}/> : null
       }
     </div>
   )
