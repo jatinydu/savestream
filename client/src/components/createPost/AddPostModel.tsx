@@ -9,6 +9,7 @@ import useToast from "../../hooks/useToast";
 import { BASE_URL, Tags_URl } from "../../Endpoints";
 import { useUID } from 'react-uid';
 import { usePost } from "../../hooks/usePost";
+import { createPost } from "../../services/feed";
 
 const categoryOptions = [
   { label: "Technology", value: "technology" },
@@ -133,31 +134,19 @@ export default function AddPostModel({className}: {className?: string}) {
 
     try {
       setLoading(true);
-      const res = await fetch(`${BASE_URL}/posts`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        credentials: 'include',
-        body: JSON.stringify(data)
-      });
+      
+      const post = await createPost(data);
 
-      const response = await res.json();
-      if (!res.ok) {
-        throw new Error(response.message || "Failed to save resource");
-      }
-
-      console.log(response.post);
       setPosts((prev:any)=>([
         ...prev,
         {
-          id: response.post.id,
-          title: response.post.title,
-          desc: response.post.desc || "",
-          link: response.post.link,
-          user_id: response.post.user_id,
-          created_at: response.post.created_at,
-          updated_at: response.post.updated_at,
+          id: post.id,
+          title: post.title,
+          desc: post.desc || "",
+          link: post.link,
+          user_id: post.user_id,
+          created_at: post.created_at,
+          updated_at: post.updated_at,
         }
       ]));
 
@@ -165,7 +154,7 @@ export default function AddPostModel({className}: {className?: string}) {
         variant: "success",
         message: "Resource saved successfully!"
       });
-      // Reset form fields
+     
       setCategory("");
       setTags([]);
       if (urlRef.current) urlRef.current.value = "";

@@ -22,3 +22,26 @@ export const getPosts=async()=>{
         throw error;
     }
 }
+
+export const createPost=async(data:any)=>{
+   try{
+         const response = await fetch(posts_url, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              credentials: 'include',
+              body: JSON.stringify(data),
+         });
+    
+         if (!response.ok) {
+              throw new Error('Failed to create post');
+         }
+    
+         const result = await response.json();
+         return result.post; 
+   }catch(error:any){
+       console.error('Failed to create post:', error.message);
+       throw error;
+   }
+}

@@ -12,14 +12,14 @@ interface UserProps {
   _id: string;
 }
 
-export default function Card({link="https://savestream.vercel.app",linkLabel="example.com", title="Title is Not Working", description, tags=[], created_at="01/01/2025", type, user}: { link?: string, linkLabel?: string, title: string, description?: string, tags: TagProps[], created_at: string, type: 'tweet' | 'youtube' | 'article', user?: UserProps }) {
+export default function Card({link="https://savestream.vercel.app", title="Title is Not Working", description, tags=[], created_at="01/01/2025", type, user}: { link?: string, linkLabel?: string, title: string, description?: string, tags: TagProps[], created_at: string, type: 'tweet' | 'youtube' | 'article', user?: UserProps }) {
   return (
     <div className='w-[450px] border-1 border-gray-300 rounded-2xl py-7 px-7 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-blue-100'>
       {/* Card Header */}
       <ul className='flex justify-between items-center w-full'>
         <span className='flex items-center gap-2'>
            <Globe size={15} color='gray'/>
-           <Link to={link} className='text-gray-600 text-xs'>{linkLabel}</Link>
+           <Link to={link} className='text-gray-600 text-xs'>{link}</Link>
         </span>
         <ActionBtn size='xsmall' className='rounded-lg border-none' icon={<Star size={13}/>} variant='ghost' onClick={()=>{}}/>
       </ul>
