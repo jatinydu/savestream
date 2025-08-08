@@ -28,13 +28,13 @@ export default function Feed() {
   }
 
   return (
-    <div className='w-full min-h-[100vh] lg:pt-[10%] md:pt-[15%] pt-[28%] px-10 overflow-x-hidden'>
+    <div className='w-full min-h-[100vh] lg:pt-[10%] md:pt-[15%] pt-[28%] px-10'>
       <FeedHeader />
       {/* Card container */}
       <div className="py-8 h-auto flex flex-wrap gap-8">
         {
-          posts.length > 0 && posts.map((post) => (
-            <Card key={post.id} tags={post.tags} title={post.title} description={post.desc} created_at={new Date(post.created_at).toLocaleDateString()} link={post.link} type={post.type} user={post.user} />
+          posts.length > 0 && posts.map((post,index) => (
+            <Card key={`${post.id}-${index}`} tags={post.tags} title={post.title} description={post.desc} created_at={new Date(post.created_at).toLocaleDateString()} link={post.link} type={post.type} user={post.user} />
           ))
         }
       </div>
