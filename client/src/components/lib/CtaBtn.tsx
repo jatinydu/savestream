@@ -33,5 +33,5 @@ export default function CtaBtn({className,type,variant="primary",size="medium",o
             <button disabled={true} className={`${btnTypes[variant]} ${btnSizes[size]} ${className} ${defaultStyles} focus:outline-none  opacity-60`} onClick={onClick}><span className='flex items-center gap-2'>{startIcon}{"Loading..."}{endIcon}</span></button>
         );
     }
-  return <button disabled={false} className={`${btnTypes[variant]} ${btnSizes[size]} ${className} ${defaultStyles} focus:outline-none`} onClick={onClick}><span className='flex items-center gap-2'>{startIcon}{label}{endIcon}</span></button>
+  return <button onKeyDown={onClick} disabled={false} className={`${btnTypes[variant]} ${btnSizes[size]} ${className} ${defaultStyles} focus:outline-none`} onClick={onClick}><span className='flex items-center gap-2'>{startIcon}{label}{endIcon}</span></button>
 }
