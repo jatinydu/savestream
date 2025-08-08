@@ -13,13 +13,13 @@ interface Tag {
 }
 
 
-export default function SearchInput({suggestions, handleAddTag, reference,handleKeyDown, placeholder, className, onChange}:{suggestions?: Tag[], reference?: React.Ref<HTMLInputElement>, placeholder?: string, className?: string, onChange?:(e: React.ChangeEvent<HTMLInputElement>) => void, handleKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void, handleAddTag?:(tag:ITag, setAlreadySelected:any)=>void}) {
+export default function SearchInput({suggestions, handleAddTag, reference,handleKeyDown, placeholder, className, onChange, alreadySelected}:{suggestions?: Tag[], reference?: React.Ref<HTMLInputElement>, placeholder?: string, className?: string, onChange?:(e: React.ChangeEvent<HTMLInputElement>) => void, handleKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void, handleAddTag?:(tag:ITag)=>void, alreadySelected?: ITag[]}) {
   console.log("Suggestions in SearchInput:", suggestions);
   return (
     <div className='flex flex-col gap-2'>
       <SimpleInput handleKeyDown={handleKeyDown} onChange={onChange} reference={reference} placeholder={placeholder} className={`w-full rounded-xl text-gray-600 font-medium text-sm ${className}`}/>
       {
-         suggestions && suggestions.length > 0 ? <Suggestions handleAddTag={handleAddTag} tagsSuggestions={suggestions}/> : null
+         suggestions && suggestions.length > 0 ? <Suggestions handleAddTag={handleAddTag} tagsSuggestions={suggestions} alreadySelected={alreadySelected}/> : null
       }
     </div>
   )
