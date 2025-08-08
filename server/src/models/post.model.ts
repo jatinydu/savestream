@@ -17,7 +17,7 @@ interface IPost extends Document {
 const postSchema = new Schema<IPost>({
     title: { type: String, required: true, unique: true },
     desc: { type: String, required: false },
-    type: { type: String, enum:["tweet","youtube","article"], required: true },
+    type: { type: String, required: true },
     is_deleted: { type: Boolean, default: false },
     link: { type: String, required: true },
     tags: [{
