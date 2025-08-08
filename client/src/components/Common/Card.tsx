@@ -41,7 +41,9 @@ export default function Card({link="https://savestream.vercel.app",linkLabel="ex
                 <Calendar size={13} color='gray'/>
                 <p className='text-xs text-gray-500'>{created_at}</p>
             </span>
-            <ActionBtn size='xsmall' className='rounded-lg border-none' icon={<ExternalLink size={15} color='black'/>} variant='ghost' onClick={()=>{}}/>
+            <ActionBtn size='xsmall' className='rounded-lg border-none' icon={<ExternalLink size={15} color='black'/>} variant='ghost' onClick={()=>{
+                window.open(link, '_blank');
+            }}/>
          </div>
       </div>
     </div>
