@@ -10,7 +10,7 @@ interface InputProps {
   required?: boolean;
   name?: string;
   size?: "sm" | "md" | "lg";
-  reference?: React.Ref<HTMLInputElement>;
+  reference?: any;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
@@ -48,10 +48,10 @@ export function AiInput({type,placeholder,reference,value,className,required,nam
   )
 }
 
-export function TextArea({placeholder,value,className,required,name}: InputProps) {
+export function TextArea({placeholder,value,className,required,name, reference}: InputProps) {
   return (
     <div>
-      <textarea placeholder={placeholder} value={value} className={`${defaultStyles} ${className} ${simple} h-32 resize-none ${sizeStyles.md}`} required={required} name={name}></textarea>
+      <textarea ref={reference} placeholder={placeholder} value={value} className={`${defaultStyles} ${className} ${simple} h-32 resize-none ${sizeStyles.md}`} required={required} name={name}></textarea>
     </div>
   )
 }
@@ -76,8 +76,7 @@ export const Dropdown=({options,placeholder="select a option",onSelect}:Dropdown
     setIsOpen(false)
   }
 
-  const modelToggle=(e:any)=>{
-    e.preventDefault();
+  const modelToggle=()=>{
     setIsOpen(!isOpen);
   }
 
@@ -86,6 +85,7 @@ export const Dropdown=({options,placeholder="select a option",onSelect}:Dropdown
         <label htmlFor="dropdown-button">Category *</label>
         <div className='mt-1'>
           <button
+            type='button'
             name="dropdown-button"
             onClick={modelToggle}
             className="w-full px-4 py-[11px] bg-white border border-gray-300 rounded-xl shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none"

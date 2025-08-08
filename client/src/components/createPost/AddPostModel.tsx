@@ -33,6 +33,9 @@ export default function AddPostModel({className}: {className?: string}) {
   const [ tags, setTags ] = useState<Tag[]>([]);
   const [ alreadySelected, setAlreadySelected ] = useState<Tag[]>([]);
   const uid = useUID();
+  const urlRef = useRef<HTMLInputElement>(null);
+  const titleRef = useRef<HTMLInputElement>(null);
+  const notesRef = useRef<HTMLTextAreaElement>(null);
 
   const fetchTagSuggestions = async(query: string) => {
     if (!query.trim() || query.trim().length<2) return;
@@ -108,6 +111,14 @@ export default function AddPostModel({className}: {className?: string}) {
   const submitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log('tags : ',tags);
+    console.log("category: ",category);
+    console.log('title: ', titleRef.current?.value);
+    console.log('url: ', urlRef.current?.value);
+    console.log('notes: ', notesRef.current?.value);
+  }
+
+  const categoryHandler=(op:any)=>{
+    setCategory(op.value)
   }
 
   return (
@@ -120,10 +131,10 @@ export default function AddPostModel({className}: {className?: string}) {
         <ActionBtn variant="ghost" icon={<X className="closeModel" size={15}/>}  size="xsmall" className="mt-3 border-none outline-none hover:bg-transparent closeModel" onClick={() => console.log("Save Resource clicked")}/>
       </ul>
       <form className="w-full h-auto py-1 flex flex-col gap-4">
-          <CreateInput tagType="input" type="text" label="URL" required={true}/>
-          <CreateInput tagType="input" type="text" label="Title" required={true}/>
-          <CreateInput tagType="textarea" type="textarea" label="Notes" required={false} placeholder="Add personal notes or key takeways.."/>
-          <Dropdown placeholder="select a category" onSelect={(op)=>{setCategory(op.value)}} options={categoryOptions}/>
+          <CreateInput reference={urlRef} tagType="input" type="text" label="URL" required={true}/>
+          <CreateInput reference={titleRef} tagType="input" type="text" label="Title" required={true}/>
+          <CreateInput reference={notesRef} tagType="textarea" type="textarea" label="Notes" required={false} placeholder="Add personal notes or key takeways.."/>
+          <Dropdown placeholder="select a category" onSelect={categoryHandler} options={categoryOptions}/>
           <CreateInput alreadySelected={alreadySelected} handleAddTag={handleAddTag} handleKeyDown={keyEnterHandler} onChange={handleInputChange} className="text-gray-500 text-[15px]" tagType="dropdown" label="Tags" required={true} reference={tagRef} suggestions={suggestions}/>
           {
             tags.length > 0 && (
