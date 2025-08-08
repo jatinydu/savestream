@@ -8,10 +8,9 @@ interface TagProps {
 
 interface UserProps {
   _id: string;
-  username: string;
 }
 export interface Post {
-    _id: string;
+    id: string;
     title: string;
     desc?: string;
     link: string;
@@ -19,6 +18,7 @@ export interface Post {
     tags: TagProps[];
     user: UserProps;
     created_at: string;
+    updated_at?: string;
   }
 
   interface PostContextType {
@@ -41,7 +41,7 @@ export interface Post {
     const addPost = (post: Post) => setPosts((prev) => [post, ...prev]);
   
     const removePost = (id: string) =>
-      setPosts((prev) => prev.filter((post) => post._id !== id));
+      setPosts((prev) => prev.filter((post) => post.id !== id));
 
     const fetchPosts = async () => {
         setLoading(true);

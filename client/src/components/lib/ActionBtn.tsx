@@ -26,5 +26,5 @@ const btnSizes = {
 const defaultStyles = "rounded-full font-sans self-start cursor-pointer";
 
 export default function ActionBtn({className,variant="add",size="medium",onClick,disabled=false, icon}: ButtonProps) {
-  return <button disabled={disabled} className={`${btnTypes[variant]} ${btnSizes[size]} ${className} ${defaultStyles}`} onClick={onClick}>{icon}</button>
+  return <button disabled={disabled} className={`${btnTypes[variant]} ${btnSizes[size]} ${className} ${defaultStyles} z-50`} onClick={onClick}>{icon}</button>
 }

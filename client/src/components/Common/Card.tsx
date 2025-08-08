@@ -10,7 +10,6 @@ interface TagProps {
 
 interface UserProps {
   _id: string;
-  username: string;
 }
 
 export default function Card({link="https://savestream.vercel.app",linkLabel="example.com", title="Title is Not Working", description, tags=[], created_at="01/01/2025", type, user}: { link?: string, linkLabel?: string, title: string, description?: string, tags: TagProps[], created_at: string, type: 'tweet' | 'youtube' | 'article', user?: UserProps }) {
@@ -26,7 +25,7 @@ export default function Card({link="https://savestream.vercel.app",linkLabel="ex
       </ul>
       {/* Card Content */}
       <div className='w-full flex flex-col justify-between gap-3 mt-5'>
-         <h2 className='font-serif text-[1.40rem] font-medium leading-6'>{title}</h2>
+         <h2 className='font-serif text-[1.40rem] font-medium leading-6 overflow-hidden'>{title}</h2>
          <p className='text-sm text-gray-400'>{description}</p>
          <div className='flex gap-2 items-center py-3'>
             {

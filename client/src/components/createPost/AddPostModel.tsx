@@ -6,8 +6,9 @@ import { useState, useRef, useEffect } from "react";
 import { Dropdown } from "../lib/Input";
 import debounce from "lodash/debounce";
 import useToast from "../../hooks/useToast";
-import { Tags_URl } from "../../Endpoints";
+import { BASE_URL, Tags_URl } from "../../Endpoints";
 import { useUID } from 'react-uid';
+import { usePost } from "../../hooks/usePost";
 
 const categoryOptions = [
   { label: "Technology", value: "technology" },
@@ -36,6 +37,7 @@ export default function AddPostModel({className}: {className?: string}) {
   const urlRef = useRef<HTMLInputElement>(null);
   const titleRef = useRef<HTMLInputElement>(null);
   const notesRef = useRef<HTMLTextAreaElement>(null);
+  const { setPosts } = usePost();
 
   const fetchTagSuggestions = async(query: string) => {
     if (!query.trim() || query.trim().length<2) return;
@@ -110,11 +112,74 @@ export default function AddPostModel({className}: {className?: string}) {
 
   const submitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('tags : ',tags);
-    console.log("category: ",category);
-    console.log('title: ', titleRef.current?.value);
-    console.log('url: ', urlRef.current?.value);
-    console.log('notes: ', notesRef.current?.value);
+
+    const data ={
+      title: titleRef.current?.value,
+      link: urlRef.current?.value,
+      desc: notesRef.current?.value,
+      type: category,
+      tags: tags.map(tag => tag.name)
+    }
+
+    console.log("Data to be submitted:", data);
+
+    if (!data.title || !data.link || !data.type) {
+      showToast({
+        variant: "error",
+        message: "Please fill all required fields."
+      });
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const res = await fetch(`${BASE_URL}/posts`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: 'include',
+        body: JSON.stringify(data)
+      });
+
+      const response = await res.json();
+      if (!res.ok) {
+        throw new Error(response.message || "Failed to save resource");
+      }
+
+      console.log(response.post);
+      setPosts((prev:any)=>([
+        ...prev,
+        {
+          id: response.post.id,
+          title: response.post.title,
+          desc: response.post.desc || "",
+          link: response.post.link,
+          user_id: response.post.user_id,
+          created_at: response.post.created_at,
+          updated_at: response.post.updated_at,
+        }
+      ]));
+
+      showToast({
+        variant: "success",
+        message: "Resource saved successfully!"
+      });
+      // Reset form fields
+      setCategory("");
+      setTags([]);
+      if (urlRef.current) urlRef.current.value = "";
+      if (titleRef.current) titleRef.current.value = "";
+      if (notesRef.current) notesRef.current.value = "";
+    } catch (err:any) {
+      console.error("Error saving resource:", err.message);
+      showToast({
+        variant: "error",
+        message: err.message || "Failed to save resource. Please try again."
+      });
+    } finally {
+      setLoading(false);
+    }
   }
 
   const categoryHandler=(op:any)=>{
