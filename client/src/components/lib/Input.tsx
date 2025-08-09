@@ -81,9 +81,9 @@ export const Dropdown=({options,placeholder="select a option",onSelect}:Dropdown
   }
 
     return (
-      <div className="relative inline-block text-left w-full">
-        <label htmlFor="dropdown-button">Category *</label>
-        <div className='mt-1'>
+      <div className="relative text-left w-full">
+        <label htmlFor="dropdown-button cursor-pointer">Category *</label>
+        <div className='mt-1 cursor-pointer'>
           <button
             type='button'
             name="dropdown-button"
@@ -95,7 +95,7 @@ export const Dropdown=({options,placeholder="select a option",onSelect}:Dropdown
         </div>
   
         {isOpen && (
-          <div className="absolute mt-2 w-full max-h-[150px] overflow-y-auto rounded-md shadow-lg bg-white ring-2 ring-primary-light z-10">
+          <div className="fixed mt-2 w-[91%] max-h-[150px] overflow-y-auto rounded-md shadow-lg bg-white ring-2 ring-primary-light z-10">
             <div className="py-1 text-left">
               {options.map((option) => (
                 <button
