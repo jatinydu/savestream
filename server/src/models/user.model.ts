@@ -8,6 +8,7 @@ interface IUser extends Document {
     posts: Schema.Types.ObjectId[]; 
     created_at?: Date;
     updated_at?: Date;
+    starredPosts?: Schema.Types.ObjectId[];
 }
 
 const userSchema = new Schema<IUser>({
@@ -15,6 +16,10 @@ const userSchema = new Schema<IUser>({
     password: { type: String, required: true },
     is_deleted: { type: Boolean, default: false },
     posts: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Post'
+    }],
+    starredPosts: [{
         type: Schema.Types.ObjectId,
         ref: 'Post'
     }]
