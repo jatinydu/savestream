@@ -300,9 +300,12 @@ export const getShareLink = async (req: ModRequest, res: Response) => {
       console.log("inside add-to-star : ::: ::");
       const userId = req.user?.id;
       const post_id = req.params?.id;
+      const starred = req.query?.starred;
 
       console.log(post_id);
       console.log(userId);
+      console.log("starred -> ",starred);
+      console.log("starred -> ",typeof starred);
 
       if(!userId){
         return res.status(StatusCodes.UNAUTHORIZED).json({ 
@@ -318,17 +321,22 @@ export const getShareLink = async (req: ModRequest, res: Response) => {
         });
       }
 
-      const data = await User.findByIdAndUpdate(userId, {
-        $addToSet:{
-          starredPosts:post_id
-        }
-      }, {new:true});
-
-      console.log("data : ",data);
+      let data = null;
+      if(starred == '0'){
+        data = await User.findByIdAndUpdate(userId, {
+          $addToSet:{
+            starredPosts:post_id
+          }
+        }, {new:true,  select: '-password -__v'});
+      }else{
+        data = await User.findByIdAndUpdate(userId,{
+         $pull:{ starredPosts:post_id } 
+        },{new:true,  select: '-password -__v'})
+      }
 
       res.status(StatusCodes.OK).json({
         success:true,
-        message:"post added to star succesfully!",
+        message:`post ${starred == '0' ? "added to" : "removed from"} star succesfully!`,
         post:data
       })
 
