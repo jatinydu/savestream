@@ -7,13 +7,9 @@ export const getPosts=async()=>{
             credentials: 'include',
         });
 
-        console.log('responce of api -> ', response);
-
         if (!response.ok) {
             throw new Error('Failed to fetch posts');
         }
-
-        console.log(response);
 
         const data = await response.json();
         return data.data.posts;

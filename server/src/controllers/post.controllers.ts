@@ -297,15 +297,13 @@ export const getShareLink = async (req: ModRequest, res: Response) => {
 
   export const addToStar = async(req:ModRequest, res:Response) => {
     try{
-      console.log("inside add-to-star : ::: ::");
       const userId = req.user?.id;
       const post_id = req.params?.id;
       const starred = req.query?.starred;
 
-      console.log(post_id);
-      console.log(userId);
-      console.log("starred -> ",starred);
-      console.log("starred -> ",typeof starred);
+      console.log("user_id : ", userId);
+      console.log("post_id : ",post_id);
+      console.log("starred : ", starred);
 
       if(!userId){
         return res.status(StatusCodes.UNAUTHORIZED).json({ 
@@ -333,6 +331,8 @@ export const getShareLink = async (req: ModRequest, res: Response) => {
          $pull:{ starredPosts:post_id } 
         },{new:true,  select: '-password -__v'})
       }
+
+      console.log('data : ', data);
 
       res.status(StatusCodes.OK).json({
         success:true,

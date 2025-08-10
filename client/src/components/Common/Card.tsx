@@ -2,6 +2,9 @@ import { Link } from 'react-router'
 import ActionBtn from '../lib/ActionBtn'
 import { Star, Globe, Calendar, ExternalLink } from 'lucide-react'
 import Tag from '../lib/Tag'
+import { useState } from 'react';
+import { posts_url } from '../../Endpoints/Feed';
+import { FaStar } from "react-icons/fa";
 
 interface TagProps {
   _id: string;
@@ -12,7 +15,29 @@ interface UserProps {
   _id: string;
 }
 
-export default function Card({link="https://savestream.vercel.app", title="Title is Not Working", description, tags=[], created_at="01/01/2025", type, user}: { link?: string, linkLabel?: string, title: string, description?: string, tags: TagProps[], created_at: string, type: 'tweet' | 'youtube' | 'article', user?: UserProps }) {
+export default function Card({link="https://savestream.vercel.app", title="Title is Not Working", description, tags=[], created_at="01/01/2025", type, user, post_id}: { link?: string, linkLabel?: string, title: string, description?: string, tags: TagProps[], created_at: string, type: 'tweet' | 'youtube' | 'article', user?: UserProps, post_id:string }) {
+  const [isStarred,setIsStarred] = useState('0');
+  const starHandler=async(e:React.FormEvent)=>{
+    e.preventDefault();
+    const res = await fetch(`${posts_url}/star/${post_id}?starred=${isStarred}`,{
+      method:'PATCH',
+      headers:{
+        'Content-Type':'application/json'
+      },
+      credentials:'include'
+    })
+
+    const data = await res.json();
+
+    if(!data.success){
+      throw new Error(data.message);
+    }
+
+    console.log(data.message);
+    
+    let flag = isStarred == '0' ? '1' : '0';
+    setIsStarred(flag);
+  }
   return (
     <div className='w-[450px] border-1 border-gray-300 rounded-2xl py-7 px-7 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-blue-100'>
       {/* Card Header */}
@@ -21,7 +46,7 @@ export default function Card({link="https://savestream.vercel.app", title="Title
            <Globe size={15} color='gray'/>
            <Link to={link} className='text-gray-600 text-xs'>{link}</Link>
         </span>
-        <ActionBtn size='xsmall' className='rounded-lg border-none' icon={<Star size={13}/>} variant='ghost' onClick={()=>{}}/>
+        <ActionBtn size='xsmall' className='rounded-lg border-none' icon={isStarred=='1' ? <FaStar size={13} /> : <Star size={13}/> } variant='ghost' onClick={starHandler}/>
       </ul>
       {/* Card Content */}
       <div className='w-full flex flex-col justify-between gap-3 mt-5'>

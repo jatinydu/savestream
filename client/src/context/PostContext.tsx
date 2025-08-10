@@ -1,6 +1,8 @@
 import React, { createContext, useState, type ReactNode } from 'react';
 import { getPosts } from '../services/feed';
 import useToast from '../hooks/useToast';
+import { BASE_URL } from '../Endpoints';
+import { posts_url } from '../Endpoints/Feed';
 interface TagProps {
   _id: string;
   name: string;
@@ -10,7 +12,7 @@ interface UserProps {
   _id: string;
 }
 export interface Post {
-    id: string;
+    _id: string;
     title: string;
     desc?: string;
     link: string;
@@ -41,13 +43,12 @@ export interface Post {
     const addPost = (post: Post) => setPosts((prev) => [post, ...prev]);
   
     const removePost = (id: string) =>
-      setPosts((prev) => prev.filter((post) => post.id !== id));
+      setPosts((prev) => prev.filter((post) => post._id !== id));
 
     const fetchPosts = async () => {
         setLoading(true);
         try {
             const postArray = await getPosts();
-            console.log('context Fetched Posts:', postArray);
             setPosts(postArray);
             showToast({
                 variant: 'success',

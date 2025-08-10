@@ -34,7 +34,7 @@ export default function Feed() {
       <div className="py-8 h-auto flex flex-wrap gap-8">
         {
           posts.length > 0 && posts.map((post,index) => (
-            <Card key={`${post.id}-${index}`} tags={post.tags} title={post.title} description={post.desc} created_at={new Date(post.created_at).toLocaleDateString()} link={post.link} type={post.type} user={post.user} />
+            <Card key={`${post._id}-${index}`} tags={post.tags} post_id={post._id} title={post.title} description={post.desc} created_at={post.created_at} link={post.link} type={post.type} user={post.user} />
           ))
         }
       </div>
