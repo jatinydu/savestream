@@ -294,3 +294,48 @@ export const getShareLink = async (req: ModRequest, res: Response) => {
         .json({ success: false, message: "Internal Server Error" });
     }
   };
+
+  export const addToStar = async(req:ModRequest, res:Response) => {
+    try{
+      console.log("inside add-to-star : ::: ::");
+      const userId = req.user?.id;
+      const post_id = req.params?.id;
+
+      console.log(post_id);
+      console.log(userId);
+
+      if(!userId){
+        return res.status(StatusCodes.UNAUTHORIZED).json({ 
+          success: false, 
+          message: "Unauthorized user is trying to access the route!" 
+        });
+      }
+
+      if(!post_id){
+        return res.status(StatusCodes.NOT_FOUND).json({ 
+          success: false, 
+          message: "post id is required" 
+        });
+      }
+
+      const data = await User.findByIdAndUpdate(userId, {
+        $addToSet:{
+          starredPosts:post_id
+        }
+      }, {new:true});
+
+      console.log("data : ",data);
+
+      res.status(StatusCodes.OK).json({
+        success:true,
+        message:"post added to star succesfully!",
+        post:data
+      })
+
+    }catch(error:any){
+      console.error("🔴 Error adding starred posts:", error.message);
+      res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({ success: false, message: "Internal Server Error" });
+    }
+  }
