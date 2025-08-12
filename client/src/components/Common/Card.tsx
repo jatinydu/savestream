@@ -3,8 +3,8 @@ import ActionBtn from '../lib/ActionBtn'
 import { Star, Globe, Calendar, ExternalLink } from 'lucide-react'
 import Tag from '../lib/Tag'
 import { useState } from 'react';
-import { posts_url } from '../../Endpoints/Feed';
 import { FaStar } from "react-icons/fa";
+import { starToggle } from '../../services/star';
 
 interface TagProps {
   _id: string;
@@ -19,15 +19,8 @@ export default function Card({setIsStarOff,defaultStar,link="https://savestream.
   const [isStarred,setIsStarred] = useState(defaultStar);
   const starHandler=async(e:React.FormEvent)=>{
     e.preventDefault();
-    const res = await fetch(`${posts_url}/star/${post_id}?starred=${isStarred}`,{
-      method:'PATCH',
-      headers:{
-        'Content-Type':'application/json'
-      },
-      credentials:'include'
-    })
-
-    const data = await res.json();
+    
+    const data = await starToggle(post_id, isStarred);
 
     if(!data.success){
       throw new Error(data.message);

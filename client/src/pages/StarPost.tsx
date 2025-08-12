@@ -1,15 +1,14 @@
-import React, { useEffect, useState, type FormEvent } from 'react'
+import { useEffect, useState } from 'react'
 import CtaBtn from '../components/lib/CtaBtn'
 import { ArrowLeft } from 'lucide-react'
 import FeedHeader from '../components/Feed/FeedHeader'
 import useToast from '../hooks/useToast'
-import { posts_url } from '../Endpoints/Feed'
 import Spinner from '../components/lib/Spinner'
 import Card from '../components/Common/Card'
 import { useNavigate } from 'react-router'
+import { getMyStarPosts } from '../services/star'
 
 export default function StarPost() {
-  const [isStarred,setIsStarred] = useState('1');
   const [isStarOff, setIsStarOff] = useState(false);
   const [posts, setPosts] = useState<any>([]);
   const [loading, setLoading] = useState<Boolean>(false);
@@ -19,15 +18,8 @@ export default function StarPost() {
   const fetchPosts=async()=>{
     setLoading(true);
     try{
-        const response = await fetch(`${posts_url}/stars`,{
-            method:'GET',
-            headers:{
-                'Content-Type':'application/json'
-            },
-            credentials:'include'
-        }) 
-
-        const result = await response.json();
+        
+        const result = await getMyStarPosts();
 
         if(!result.success){
             showToast({

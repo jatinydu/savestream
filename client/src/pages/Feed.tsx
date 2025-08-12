@@ -6,7 +6,6 @@ import Spinner from "../components/lib/Spinner";
 
 export default function Feed() {
   const { posts, loading, setLoading, fetchPosts } = usePost();
-  const [isStarred, setIsStarred] = useState('0');
 
   useEffect(() => {
     setLoading(true);
