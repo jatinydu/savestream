@@ -1,8 +1,7 @@
 import React, { createContext, useState, type ReactNode } from 'react';
 import { getPosts } from '../services/feed';
 import useToast from '../hooks/useToast';
-import { BASE_URL } from '../Endpoints';
-import { posts_url } from '../Endpoints/Feed';
+
 interface TagProps {
   _id: string;
   name: string;
@@ -21,6 +20,7 @@ export interface Post {
     user: UserProps;
     created_at: string;
     updated_at?: string;
+    is_starred?:boolean;
   }
 
   interface PostContextType {
@@ -49,10 +49,10 @@ export interface Post {
         try {
             const postArray = await getPosts();
             setPosts(postArray);
-            showToast({
-                variant: 'success',
-                message: 'Posts fetched successfully!'
-            })
+            // showToast({
+            //     variant: 'success',
+            //     message: 'Posts fetched successfully!'
+            // })
         } catch (error) {
             showToast({
                 variant: 'error',

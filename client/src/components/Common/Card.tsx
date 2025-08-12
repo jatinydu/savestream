@@ -15,28 +15,23 @@ interface UserProps {
   _id: string;
 }
 
-export default function Card({setIsStarOff,defaultStar,link="https://savestream.vercel.app", title="Title is Not Working", description, tags=[], created_at="01/01/2025", type, user, post_id}: { link?: string, linkLabel?: string, title: string, description?: string, tags: TagProps[], created_at: string, type: 'tweet' | 'youtube' | 'article', user?: UserProps, post_id:string, defaultStar:string, setIsStarOff?:any }) {
-  const [isStarred,setIsStarred] = useState(defaultStar);
+export default function Card({setStarClick,is_starred,link='https://example.com', title, description, tags=[], created_at, type, user, post_id}: { link?: string, linkLabel?: string, title: string, description?: string, tags: TagProps[], created_at: string, type: 'tweet' | 'youtube' | 'article', user?: UserProps, post_id:string, is_starred?:boolean, setStarClick?:any }) {
   const starHandler=async(e:React.FormEvent)=>{
     e.preventDefault();
+
+    console.log('card - post_id : ', post_id);
     
-    const data = await starToggle(post_id, isStarred);
+    const data = await starToggle(post_id);
+
+    console.log("toggle result : ", data);
 
     if(!data.success){
       throw new Error(data.message);
     }
 
-    console.log(data.message);
-    
-    let flag = isStarred == '0' ? '1' : '0';
+    console.log("data message / - / ",data);
 
-    if(flag === '0'){
-      setIsStarOff((prev:any)=>!prev);
-    }
-
-    // console.log('post : -> ', data);
-
-    setIsStarred(flag);
+    setStarClick((prev:any)=>!prev);
   }
   return (
     <div className='w-[450px] border-1 border-gray-300 rounded-2xl py-7 px-7 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-blue-100'>
@@ -46,7 +41,7 @@ export default function Card({setIsStarOff,defaultStar,link="https://savestream.
            <Globe size={15} color='gray'/>
            <Link to={link} className='text-gray-600 text-xs'>{link}</Link>
         </span>
-        <ActionBtn size='xsmall' className='rounded-lg border-none' icon={isStarred=='1' ? <FaStar size={13} /> : <Star size={13}/> } variant='ghost' onClick={starHandler}/>
+        <ActionBtn size='xsmall' className='rounded-lg border-none' icon={ is_starred ? <FaStar size={13} /> : <Star size={13}/> } variant='ghost' onClick={starHandler}/>
       </ul>
       {/* Card Content */}
       <div className='w-full flex flex-col justify-between gap-3 mt-5'>

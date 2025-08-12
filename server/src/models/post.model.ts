@@ -12,6 +12,7 @@ interface IPost extends Document {
     user: Schema.Types.ObjectId; 
     created_at?: Date;
     updated_at?: Date;
+    is_starred?: Boolean
 }
 
 const postSchema = new Schema<IPost>({
@@ -20,6 +21,7 @@ const postSchema = new Schema<IPost>({
     type: { type: String, required: true },
     is_deleted: { type: Boolean, default: false },
     link: { type: String, required: true },
+    is_starred: { type: Boolean, default:false},
     tags: [{
         type: Schema.Types.ObjectId, 
         ref: 'Tag',

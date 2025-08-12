@@ -1,7 +1,7 @@
 import { posts_url } from "../Endpoints/Feed";
 
-export const starToggle=async(post_id:string, isStarred:string)=>{
-    const res = await fetch(`${posts_url}/star/${post_id}?starred=${isStarred}`,{
+export const starToggle=async(post_id:string)=>{
+    const res = await fetch(`${posts_url}/star/${post_id}`,{
         method:'PATCH',
         headers:{
           'Content-Type':'application/json'
@@ -10,6 +10,7 @@ export const starToggle=async(post_id:string, isStarred:string)=>{
       })
   
       const data = await res.json();
+      
       return data;
 }
 

@@ -5,6 +5,7 @@ import { usePost } from '../hooks/usePost';
 import Spinner from "../components/lib/Spinner";
 
 export default function Feed() {
+  const [starClick, setStarClick] = useState(false);
   const { posts, loading, setLoading, fetchPosts } = usePost();
 
   useEffect(() => {
@@ -15,12 +16,11 @@ export default function Feed() {
     };
 
     fetchData();
-    console.log('3) loading -> ', loading);
-   }, []);
+   }, [starClick]);
 
-  if(loading) {
-    return <Spinner/>
-  }
+  // if(loading) {
+  //   // return <Spinner/>
+  // }
 
   if( posts.length === 0) {
     return (
@@ -37,7 +37,7 @@ export default function Feed() {
       <div className="py-8 h-auto flex flex-wrap gap-8">
         {
           posts.length > 0 && posts.map((post,index) => (
-            <Card defaultStar="0" key={`${post._id}-${index}`} tags={post.tags} post_id={post._id} title={post.title} description={post.desc} created_at={post.created_at} link={post.link} type={post.type} user={post.user} />
+            <Card setStarClick={setStarClick} is_starred={post.is_starred} key={`${post._id}-${index}`} tags={post.tags} post_id={post._id} title={post.title} description={post.desc} created_at={post.created_at} link={post.link} type={post.type} user={post.user} />
           ))
         }
       </div>

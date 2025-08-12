@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 interface ButtonProps {
     label: string;
@@ -27,7 +27,7 @@ const btnSizes = {
 
 const defaultStyles = "rounded-lg font-sans focus:outline-none transition-all duration-400 self-start";
 
-export default function CtaBtn({className,type,variant="primary",size="medium",onClick,label,disabled=false, startIcon, endIcon, loading}: ButtonProps) {
+export default function CtaBtn({className,variant="primary",size="medium",onClick,label, startIcon, endIcon, loading}: ButtonProps) {
     if (loading) {
         return (
             <button disabled={true} className={`${btnTypes[variant]} ${btnSizes[size]} ${className} ${defaultStyles} focus:outline-none  opacity-60`} onClick={onClick}><span className='flex items-center gap-2'>{startIcon}{"Loading..."}{endIcon}</span></button>

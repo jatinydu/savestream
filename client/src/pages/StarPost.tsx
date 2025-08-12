@@ -9,11 +9,11 @@ import { useNavigate } from 'react-router'
 import { getMyStarPosts } from '../services/star'
 
 export default function StarPost() {
-  const [isStarOff, setIsStarOff] = useState(false);
   const [posts, setPosts] = useState<any>([]);
   const [loading, setLoading] = useState<Boolean>(false);
   const { showToast } = useToast();
   const navigate = useNavigate();
+  const [starClick, setStarClick] = useState(false);
   
   const fetchPosts=async()=>{
     setLoading(true);
@@ -43,7 +43,7 @@ export default function StarPost() {
 
   useEffect(()=>{
     fetchPosts();
-  },[isStarOff])
+  },[starClick])
 
   if(loading){
     return <Spinner/>
@@ -56,7 +56,7 @@ export default function StarPost() {
         <div className='flex gap-6 flex-wrap h-auto overflow-hidden py-7'>
         {
             posts?.length ? posts.map((current:any,index:any)=>{
-                return <Card setIsStarOff={setIsStarOff} defaultStar='1' key={index} post_id={current._id} link={current.link} title={current.title} description={current.desc} tags={current.tags} created_at={current.created_at} type={current.type}/>
+                return <Card is_starred={current.is_starred} setStarClick={setStarClick} key={index} post_id={current._id} link={current.link} title={current.title} description={current.desc} tags={current.tags} created_at={current.created_at} type={current.type}/>
             }) : <div className='w-full h-[50vh] flex items-center justify-center'>
                 <p>No Starred posts!</p>
             </div>

@@ -296,16 +296,14 @@ export const getShareLink = async (req: ModRequest, res: Response) => {
   };
 
   export const addToStar = async(req:ModRequest, res:Response) => {
+    const session = await mongoose.startSession();
+    session.startTransaction();
     try{
       const userId = req.user?.id;
       const post_id = req.params?.id;
-      const starred = req.query?.starred;
-
-      console.log("user_id : ", userId);
-      console.log("post_id : ",post_id);
-      console.log("starred : ", starred);
 
       if(!userId){
+        await session.abortTransaction();
         return res.status(StatusCodes.UNAUTHORIZED).json({ 
           success: false, 
           message: "Unauthorized user is trying to access the route!" 
@@ -313,34 +311,53 @@ export const getShareLink = async (req: ModRequest, res: Response) => {
       }
 
       if(!post_id){
+        await session.abortTransaction();
         return res.status(StatusCodes.NOT_FOUND).json({ 
           success: false, 
           message: "post id is required" 
         });
       }
 
+      const postExist = await Post.findById(post_id);
+
+      if(!postExist){
+        session.abortTransaction();
+        return res.status(StatusCodes.NOT_FOUND).json({
+          success:false,
+          message:"post with id not found!"
+        }) 
+      }
+
       let data = null;
-      if(starred == '0'){
+      if(!postExist.is_starred){
         data = await User.findByIdAndUpdate(userId, {
           $addToSet:{
             starredPosts:post_id
           }
-        }, {new:true,  select: '-password -__v'});
+        }, {new:true,  select: '-password -__v', session:session});
+
+        postExist.is_starred = true;
       }else{
         data = await User.findByIdAndUpdate(userId,{
          $pull:{ starredPosts:post_id } 
-        },{new:true,  select: '-password -__v'})
+        },{new:true,  select: '-password -__v', session:session})
+
+        postExist.is_starred = false;
       }
 
-      console.log('data : ', data);
+      postExist.save();
+      await session.commitTransaction(); 
+      session.endSession();
 
       res.status(StatusCodes.OK).json({
         success:true,
-        message:`post ${starred == '0' ? "added to" : "removed from"} star succesfully!`,
+        message:`post ${postExist.is_starred === false ? "added to" : "removed from"} star succesfully!`,
         post:data
       })
 
     }catch(error:any){
+      await session.abortTransaction();
+      session.endSession();
       console.error("🔴 Error adding starred posts:", error.message);
       res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
