@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 interface ButtonProps {
     label: string;
-    onClick?: (e:React.FormEvent) => Promise<void>;
+    onClick?: (e:React.FormEvent) => Promise<void> | any;
     disabled?: boolean;
     variant?: 'primary' | 'secondary' | 'ghost';
     size?: 'small' | 'medium' | 'large';

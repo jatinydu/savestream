@@ -1,3 +1,4 @@
+import { Link } from 'react-router';
 import Logo from '../../assets/savestream.png';
 import CtaBtn from './CtaBtn';
 import Toggle from './Toggle';
@@ -15,7 +16,9 @@ export default function Navbar() {
       </div>
       <ul className='flex items-center md:gap-5 gap-2'>
           <Toggle/>
-          <CtaBtn variant='ghost' label='Starred' startIcon={<Star size={18}/>} onClick={()=>{}}/>
+          <Link to='/star'>
+            <CtaBtn variant='ghost' label='Starred' startIcon={<Star size={18}/>}/>
+          </Link>
           <span className='text-gray-500 text-sm md:block hidden'>3 resources saved</span>
       </ul>
     </div>

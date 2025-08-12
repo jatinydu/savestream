@@ -53,10 +53,10 @@
 
 
   .loader {
-    color: #fff;
+    color: #3f45ba;
     font-family: Consolas, Menlo, Monaco, monospace;
     font-weight: bold;
-    font-size: 78px;
+    font-size: 50px;
     opacity: 0.8;
   }
   .loader:before {

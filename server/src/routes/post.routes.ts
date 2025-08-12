@@ -8,5 +8,6 @@ router.post("/", auth, Post.createPost);
 router.get("/", auth, Post.getPosts);
 router.patch("/:id", auth, Post.deletePost);
 router.patch("/star/:id", auth, Post.addToStar);
+router.get("/stars", auth, Post.getMyStarPosts)
 
 export default router;

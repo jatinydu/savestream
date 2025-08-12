@@ -46,7 +46,6 @@ export interface Post {
       setPosts((prev) => prev.filter((post) => post._id !== id));
 
     const fetchPosts = async () => {
-        setLoading(true);
         try {
             const postArray = await getPosts();
             setPosts(postArray);
@@ -60,8 +59,6 @@ export interface Post {
                 message: 'Failed to fetch posts. Please try again later.'
             })
             console.error('Failed to fetch posts:', error);
-        } finally {
-            setLoading(false);
         }
     }
   

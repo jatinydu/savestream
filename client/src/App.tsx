@@ -9,6 +9,7 @@ import { Plus } from "lucide-react"
 import AddPostModel from "./components/createPost/AddPostModel"
 import { useState } from "react"
 import { useAuth } from "./context/AuthContext"
+import StarPost from "./pages/StarPost"
 
 function App() {
   const { isAuthenticated } = useAuth();
@@ -29,6 +30,7 @@ function App() {
         <Routes>
             <Route element={<PrivateRoutes/>}>
               <Route path="/" element={<Feed/>} index />
+              <Route path="/star" element={<StarPost/>}/>
             </Route>
           <Route path="/login" element={<AuthForm type="login" title="Welcome back!" desc="Login to your account"/>} />
           <Route path="/signup" element={<AuthForm type="signup" title="Create a free account" desc="Join us today!"/>} />

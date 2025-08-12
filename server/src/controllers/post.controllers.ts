@@ -347,3 +347,40 @@ export const getShareLink = async (req: ModRequest, res: Response) => {
         .json({ success: false, message: "Internal Server Error" });
     }
   }
+
+  export const getMyStarPosts=async(req:ModRequest, res:Response)=>{
+    try{
+       const user_id = req.user?.id;
+
+       if(!user_id){
+          return res.status(StatusCodes.FORBIDDEN).json({
+            success:false,
+            message:"unauthorized to access this route!"
+          })
+       }
+
+       const result = await User.findById(user_id).select('_id').populate({
+          path:'starredPosts',
+          populate:{
+            path:'tags'
+          }
+       });
+
+       if(!result || result?.starredPosts?.length === 0 ){
+         return res.status(StatusCodes.NOT_FOUND).json({
+          success:false,
+          message:"No starred post found!"
+         })
+       }
+
+       res.status(StatusCodes.OK).json({
+        success:true,
+        message:"Sucesfully fetched starred posts!",
+        posts:result
+       })
+
+    }catch(error:any){
+      console.log('🔴 Error while getting starred post',error.message);
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ success: false, message: "Internal Server Error" });
+    }
+  }

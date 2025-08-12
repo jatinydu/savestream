@@ -1,18 +1,22 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Card from "../components/Common/Card";
 import FeedHeader from "../components/Feed/FeedHeader";
 import { usePost } from '../hooks/usePost';
 import Spinner from "../components/lib/Spinner";
 
 export default function Feed() {
-  const { posts, loading, fetchPosts } = usePost();
+  const { posts, loading, setLoading, fetchPosts } = usePost();
+  const [isStarred, setIsStarred] = useState('0');
 
   useEffect(() => {
+    setLoading(true);
     const fetchData = async () => {
       await fetchPosts();
+      setLoading(false);
     };
 
     fetchData();
+    console.log('3) loading -> ', loading);
    }, []);
 
   if(loading) {
@@ -34,7 +38,7 @@ export default function Feed() {
       <div className="py-8 h-auto flex flex-wrap gap-8">
         {
           posts.length > 0 && posts.map((post,index) => (
-            <Card key={`${post._id}-${index}`} tags={post.tags} post_id={post._id} title={post.title} description={post.desc} created_at={post.created_at} link={post.link} type={post.type} user={post.user} />
+            <Card defaultStar="0" key={`${post._id}-${index}`} tags={post.tags} post_id={post._id} title={post.title} description={post.desc} created_at={post.created_at} link={post.link} type={post.type} user={post.user} />
           ))
         }
       </div>

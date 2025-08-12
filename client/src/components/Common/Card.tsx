@@ -15,8 +15,8 @@ interface UserProps {
   _id: string;
 }
 
-export default function Card({link="https://savestream.vercel.app", title="Title is Not Working", description, tags=[], created_at="01/01/2025", type, user, post_id}: { link?: string, linkLabel?: string, title: string, description?: string, tags: TagProps[], created_at: string, type: 'tweet' | 'youtube' | 'article', user?: UserProps, post_id:string }) {
-  const [isStarred,setIsStarred] = useState('0');
+export default function Card({setIsStarOff,defaultStar,link="https://savestream.vercel.app", title="Title is Not Working", description, tags=[], created_at="01/01/2025", type, user, post_id}: { link?: string, linkLabel?: string, title: string, description?: string, tags: TagProps[], created_at: string, type: 'tweet' | 'youtube' | 'article', user?: UserProps, post_id:string, defaultStar:string, setIsStarOff?:any }) {
+  const [isStarred,setIsStarred] = useState(defaultStar);
   const starHandler=async(e:React.FormEvent)=>{
     e.preventDefault();
     const res = await fetch(`${posts_url}/star/${post_id}?starred=${isStarred}`,{
@@ -36,6 +36,13 @@ export default function Card({link="https://savestream.vercel.app", title="Title
     console.log(data.message);
     
     let flag = isStarred == '0' ? '1' : '0';
+
+    if(flag === '0'){
+      setIsStarOff((prev:any)=>!prev);
+    }
+
+    // console.log('post : -> ', data);
+
     setIsStarred(flag);
   }
   return (
@@ -64,7 +71,7 @@ export default function Card({link="https://savestream.vercel.app", title="Title
          <div className='w-full flex items-center justify-between'>
             <span className='flex items-center gap-1'>
                 <Calendar size={13} color='gray'/>
-                <p className='text-xs text-gray-500'>{created_at}</p>
+                <p className='text-xs text-gray-500'>{new Date(created_at).toUTCString()}</p>
             </span>
             <ActionBtn size='xsmall' className='rounded-lg border-none' icon={<ExternalLink size={15} color='black'/>} variant='ghost' onClick={()=>{
                 window.open(link, '_blank');
