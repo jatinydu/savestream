@@ -366,12 +366,12 @@ export const getShareLink = async (req: ModRequest, res: Response) => {
           }
        });
 
-       if(!result || result?.starredPosts?.length === 0 ){
-         return res.status(StatusCodes.NOT_FOUND).json({
-          success:false,
-          message:"No starred post found!"
-         })
-       }
+      //  if(!result || result?.starredPosts?.length === 0 ){
+      //    return res.status(StatusCodes.NOT_FOUND).json({
+      //     success:false,
+      //     message:"No starred post found!"
+      //    })
+      //  }
 
        res.status(StatusCodes.OK).json({
         success:true,
